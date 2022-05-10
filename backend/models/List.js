@@ -2,25 +2,27 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize ("sqlite://data.db")
 
 
-const User = sequelize.define('User', {
+const List = sequelize.define('List', {
     // Model attributes are defined here
     userName: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false
      },
-    password :{
-        allowNull: false 
-    },
-    email: {
+     userId:{
         type: DataTypes.STRING,
         unique: true,
-        allowNull: false
-    }
-
+     },
+    message :{
+        type: DataTypes.STRING,
+        allowNull: false 
+    },
+    imageUrl: { type: DataTypes.STRING,
+        allowNull: false },
+  
     
   }, {
     // Other model options go here
   });
 
-  module.export={User}
+  module.export={List}
