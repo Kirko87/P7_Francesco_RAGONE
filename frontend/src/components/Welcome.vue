@@ -4,12 +4,14 @@ defineProps({
     type: String,
     required: true,
   },
+ 
 })
 
 
 </script>
 
 <template>
+
   <div class="greetings">
     <h1 class="">{{ msg }}</h1>
     <h3>
@@ -17,22 +19,28 @@ defineProps({
     </h3>
 
     <div id="logSig">
-      <div class="button"><router-link id="sigIn" to="/signUp">Sign-up</router-link></div>
-     <div class="button"><router-link id="logIn" to="/login">Login</router-link></div>
+      <router-link id="sigIn" to="/signUp">Sign-up</router-link>
+      <router-link id="logIn" to="/login">Login</router-link>
     </div>
 
   </div>
 </template>
 
 <style scoped>
+
+
+
 h1 {
   font-weight: 500;
   font-size: 2.6rem;
-  top: -10px;
+  color:rgb(19, 17, 17);
+  text-shadow: 1px 1px 7px rgba(255, 53, 53, 0.441);
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
+  color:rgb(15, 12, 12);
+  
 }
 
 .greetings h1,
@@ -42,27 +50,25 @@ h3 {
 
 #logSig{
     display: flex;
-    justify-content: center;
-    gap:50px
+    justify-content: space-around;
+    margin-bottom:3em
 }
+
 #sigIn, #logIn {
   display: flex;
   align-items:center;
   text-decoration: none;
-  color: black
-}
-
-.button {
-  display:flex;
-  align-items:center;
-  justify-content: center;
-  border: 2px solid black;
-  border-radius:30px;
-  width:70px;
-  height:40px
+  color: white;
+   text-shadow: 1px 1px 7px rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 30px;
 
 }
-
+ 
+#sigIn:hover,#logIn:hover {
+  color:rgb(246, 201, 209);
+  text-shadow: 1px 1px 7px rgb(59, 59, 59);
+} 
 </style>
 
 
