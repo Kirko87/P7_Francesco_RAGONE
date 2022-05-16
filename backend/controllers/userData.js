@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 
 //importazione del modello
-const {User} = require('../models/User');
+const {User, Users} = require('../models/User');
 //console.log(User);
 
 //signup per accedere come nuovo utilizzatore

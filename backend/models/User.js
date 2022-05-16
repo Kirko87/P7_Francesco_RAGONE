@@ -36,7 +36,7 @@ const UserSpace = sequelize.define('UserSpace', {
   // Model attributes are defined here
   userId: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   
   message: {
@@ -45,19 +45,19 @@ const UserSpace = sequelize.define('UserSpace', {
   },
   imageUrl: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 
   email: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: true
   }
 
 }, {
   // Other model options go here
 });
 
-sequelize.sync({force:true})
+ sequelize.sync({force:true})
 
 module.exports = { User, UserSpace }
