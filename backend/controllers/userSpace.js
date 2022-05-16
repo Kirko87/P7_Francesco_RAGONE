@@ -1,11 +1,13 @@
-const Sauces = require('../models/List')
+const {User} = require('../models/User')
 const fs = require('fs');
+const express = require ("express");
 
-//-----creare/registrare una lista
-exports.add = (req, res, next) => {
+
+//-----creare/registrare 
+exports.userCreate = (req, res, next) => {
   console.log(req.body);
-  const lista= new List({
-    ...JSON.parse(req.body.list),
+  const lista= new User ({
+    ...JSON.parse(req.body.lista),
   });
   lista.save()
     .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
@@ -17,12 +19,12 @@ exports.add = (req, res, next) => {
 
 }
 
-// RECUPERA TUTTE le liste
-exports.list = (req, res, next) => {
+// RECUPERA TUTTA la pagina
+exports.userTakeList = (req, res, next) => {
 
-  Sauces.find().then(
-    (sauces) => {
-      res.status(200).json(sauces.map(normalizer));
+  User.find().then(
+    (users) => {
+      res.status(200).json(users.map(normalizer));
     }
   ).catch(
     (error) => {
@@ -33,9 +35,9 @@ exports.list = (req, res, next) => {
   );
 }
 
-//RECUPERA UNA salsa
-exports.getOneSauce = (req, res, next) => {
-  Sauces.findOne({
+//RECUPERA un elemento
+exports.userGetOne = (req, res, next) => {
+  User.findOne({
     _id: req.params.id
 
   }).then(
@@ -50,31 +52,24 @@ exports.getOneSauce = (req, res, next) => {
     }
   );
 };
-function normalizer (sauce) {
-  return{
-    ...sauce.toObject(),
-    likes: sauce.usersLiked.length,
-    dislikes: sauce.usersDisliked.length
-  }
-  
-}
 
-//MODIFICA una salsa
-exports.modifySauce = (req, res, next) => {
-  const sauceObject = req.file ?
+//MODIFICA 
+exports.userModify= (req, res, next) => {
+  const userObject = req.file ?
     {
-      ...JSON.parse(req.body.sauce),
+      ...JSON.parse(req.body.message),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
-  Sauces.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+  User.updateOne({ _id: req.params.id }, { ...userObject, _id: req.params.id })
     .then(() => res.status(200).json({ message: 'Objet modifié !' }))
     .catch(error => res.status(400).json({ error }));
 };
-//ELIMINA una salsa
-exports.deleteSauce = (req, res, next) => {
-  Sauces.findOne({ _id: req.params.id })
-    .then(sauce => {
-      const filename = sauce.imageUrl.split('/images/')[1];
+
+//ELIMINA 
+exports.userDelete = (req, res, next) => {
+  User.findOne({ _id: req.params.id })
+    .then( user => {
+      const filename = user.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         Sauces.deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Objet supprimé !' }))

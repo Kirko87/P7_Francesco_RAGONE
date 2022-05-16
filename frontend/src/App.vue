@@ -16,7 +16,7 @@ import Welcome from "@/components/Welcome.vue";
 
   <RouterView />
   <!--carica gli input login, ovvero LogInview.vue-->
-  <div id="buttonContainer"><button id="button_div">VALIDATE!</button></div>
+ 
 
 </template>
 
@@ -31,14 +31,6 @@ import Welcome from "@/components/Welcome.vue";
    background-repeat: no-repeat;
    background-size: cover;
  }
-#buttonContainer {
-  display:flex;
-   justify-content: center;
-}
 
-#button_div {
-  margin:5px;
-  user-select:none;
-}
 
 </style>

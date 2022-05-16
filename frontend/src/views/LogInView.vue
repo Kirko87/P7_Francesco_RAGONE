@@ -7,18 +7,17 @@
 <label for="password" class="password">Password:</label>
 <input id="password" placeholder=" Votre mot de passe"/>
 </form>
-
+ <div id="buttonContainer"><button id="button_div">VALIDATE!</button></div>
 </template>
 
 
 <style>
 
-
 .userName, .password   {
-     color:rgb(255, 255, 255);
+     color:rgb(65, 59, 59);
     font-size:23px;
     margin-bottom:5px;
-   text-shadow: 1px 1px 2px rgb(0, 0, 0);
+   text-shadow: 1px 1px 9px rgb(140, 140, 140);
    
 }
 
@@ -34,4 +33,13 @@
     margin: 30px
 }
 
+#buttonContainer {
+  display:flex;
+   justify-content: center;
+}
+
+#button_div {
+  margin:5px;
+  user-select:none;
+}
 </style>

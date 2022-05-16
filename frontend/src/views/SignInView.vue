@@ -21,7 +21,7 @@
 <label for="password" class="re-password">Re-enter Password:</label>
 <input id="re-password" placeholder="Ressaisir votre mot de passe"/>
 </form>
-
+ <div id="buttonContainer"><button id="button_div">VALIDATE!</button></div>
 
 </template>
 
@@ -50,4 +50,13 @@
     margin: 30px
 }
   
+#buttonContainer {
+  display:flex;
+   justify-content: center;
+}
+
+#button_div {
+  margin:5px;
+  user-select:none;
+} 
 </style>
