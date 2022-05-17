@@ -13,13 +13,11 @@ module.exports = (req, res, next) => {
         throw 'User not found !'
       }
       //----------VERIFICARE l'identità dell'utente
-      if (req.body.userId && req.body.userId !== userId  ) {
-        throw 'User ID non valable !';
-      } else {
+       
         next();
       }
         
-    } catch {
+     catch {
       res.status(401).json({ 
         error: new Error ('Requête non authentifiée !')
     });

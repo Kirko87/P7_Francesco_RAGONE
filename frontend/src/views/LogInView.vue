@@ -1,19 +1,42 @@
 <template>
 
-<form id="logList">
-<label for="userName" class="userName">User Name:</label>
-<input type="text" id="userName" placeholder="Votre nom d’utilisateur"/>
+<form class="LogInView" @submit="login">
+<label for="userName" class="LogInView_userName">User Name:<input required v-model="userName" type="text" placeholder="Votre nom d’utilisateur"/></label>
 <br>
-<label for="password" class="password">Password:</label>
-<input id="password" placeholder=" Votre mot de passe"/>
+<label for="password" class="LogInView_password">Password:<input required v-model="password" type="password" placeholder=" Votre mot de passe"/></label>
+<button class="LogInView_button" type="submit">VALIDATE!</button>
 </form>
- <div id="buttonContainer"><button id="button_div">VALIDATE!</button></div>
+ 
 </template>
 
+<script>
+export default{
+  data(){
+    return {
+      userName:null,
+      password:null
+    }
+  },
+  methods:{
+    login(event){
+      event.preventDefault()
+      fetch ("http://localhost:3010/Groupomania/login", {
+        method:"post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify({email:this.userName, password:this.password})
+    })},
+  }
+}
 
-<style>
+</script>
 
-.userName, .password   {
+<style lang="scss">
+.LogInView {
+
+&_userName, &_password   {
      color:rgb(65, 59, 59);
     font-size:23px;
     margin-bottom:5px;
@@ -42,4 +65,7 @@
   margin:5px;
   user-select:none;
 }
+}
+
+
 </style>
