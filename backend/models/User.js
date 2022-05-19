@@ -12,7 +12,7 @@ const User = sequelize.define('User', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull:false
+    allowNull: false
   },
   surname: {
     type: DataTypes.STRING,
@@ -38,11 +38,16 @@ const Message = sequelize.define('Message', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  
-  content: {
+
+  message: {
     type: DataTypes.STRING,
 
   },
+
+  comment: {
+    type: DataTypes.STRING
+  },
+
   imageUrl: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -58,6 +63,6 @@ const Message = sequelize.define('Message', {
   // Other model options go here
 });
 
- sequelize.sync()
+sequelize.sync()
 
 module.exports = { User, Message }
