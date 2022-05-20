@@ -73,14 +73,14 @@ body {
 
   &_userName,
   &_password {
-    display: flex;
+    display: grid;
     justify-content: center;
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
     text-shadow: 4px 3px 4px rgb(0, 0, 0);
     &_input {
       justify-self: center;
-      margin-left: 20px;
+      margin: 20px;
     }
   }
 
@@ -115,12 +115,14 @@ body {
     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     font-weight: bold;
     font-size: 30px;
-
+ 
   }
 
   &_sigInLink:hover {
+    left: 0;
     color: rgb(0, 0, 0);
     text-shadow: 7px 1px 14px rgb(59, 59, 59);
+   
   }
 
   &_logInLink {

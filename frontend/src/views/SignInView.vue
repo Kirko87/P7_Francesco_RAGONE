@@ -89,7 +89,7 @@ export default {
   &_re-email,
   &_password,
   &_re-password {
-    display: flex;
+    display: grid;
     justify-content: center;
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
@@ -97,7 +97,7 @@ export default {
 
     &_input {
       justify-self: center;
-      margin-left: 20px;
+      margin: 20px;
     }
   }
 
