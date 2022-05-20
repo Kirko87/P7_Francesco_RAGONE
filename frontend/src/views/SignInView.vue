@@ -118,8 +118,8 @@ export default {
   &_title {
     text-align: center;
     font-size: 3.5rem;
-    text-shadow: 1px 1px 7px rgb(0, 0, 0);
-    color: rgb(241, 245, 249);
+    text-shadow: 1px 1px 7px rgb(194, 244, 240);
+    color: rgb(0, 0, 0);
     margin-bottom: 5rem;
   }
 
