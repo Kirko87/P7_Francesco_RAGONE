@@ -1,5 +1,9 @@
 <template>
+<img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+            height="200" background="transparent" />
+
   <h1 class="logIn_title">LogIn-now!</h1>
+  
   <div class="logIn">
 
     <router-link class="logIn_sigInLink" to="/signUp">Sign-up</router-link>
@@ -7,10 +11,10 @@
   </div>
 
   <form class="LogInView" @submit="login">
-    <label for="userName" class="LogInView_userName">User Name:<input required v-model="userName" type="text"
+    <label for="userName" class="LogInView_userName">User Name:<input required class="LogInView_userName_input" v-model="userName" type="text"
         placeholder="Votre nom d’utilisateur" /></label>
     <br>
-    <label for="password" class="LogInView_password">Password:<input required v-model="password" type="password"
+    <label for="password" class="LogInView_password">Password:<input required class="LogInView_password_input" v-model="password" type="password"
         placeholder=" Votre mot de passe" /></label>
     <div class="LogInView_button"><button type="submit">VALIDATE!</button></div>
   </form>
@@ -50,14 +54,16 @@ export default {
     display: flex;
     justify-content: center;
     color: rgb(65, 59, 59);
-    font-size: 23px;
-    margin-bottom: 5px;
-    text-shadow: 1px 1px 9px rgb(140, 140, 140);
+    font-size: 1.5rem;
+    text-shadow: 4px 3px 4px rgb(174, 167, 167);
+    &_input {
+      justify-self: center;
+      margin-left: 20px;
+    }
   }
 
   &_button {
     display: flex;
-    align-items: center;
     justify-content: center;
     margin-top: 70px;
   }
@@ -72,9 +78,9 @@ export default {
   &_title {
     text-align: center;
     font-size: 3rem;
-    text-shadow: 2px 2px 7px rgb(244, 81, 81);
+     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     color: rgb(241, 245, 249);
-    margin-bottom: 50px;
+    margin-bottom: 5rem;
   }
 
   &_sigInLink,

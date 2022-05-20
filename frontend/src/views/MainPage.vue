@@ -9,14 +9,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home page</title>
-       
+
     </head>
+    <header>
+        <img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+            height="200" background="transparent" />
+
+    </header>
 
     <body>
-      <img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200" height="200"
-      background="transparent" />
 
-       <h1>Welcome to<br>Groupomania<br>chat!</h1>
+        <h1>Welcome to<br>Groupomania<br>chat!</h1>
 
     </body>
 
@@ -25,10 +28,10 @@
 
 <style>
 h1 {
-  font-weight: 500;
-  font-size: 3.6rem;
-  color: rgb(19, 17, 17);
-  text-shadow: 1px 1px 7px rgba(255, 53, 53, 0.441);
-  text-align: center
+    font-weight: 500;
+    font-size: 3.6rem;
+    color: rgb(19, 17, 17, 0.5);
+    text-shadow: 1px 1px 7px rgba(164, 189, 242, 0.441);
+    text-align: center
 }
 </style>
