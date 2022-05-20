@@ -60,8 +60,8 @@ body {
 }
 
 .transparentBoxLogin>div{
-  background-color: #f3dada65;
-  border: 1px solid black;
+  background-color: #f4ad4939;
+  border: 4px dotted black;
   opacity: .6;
   
 }
