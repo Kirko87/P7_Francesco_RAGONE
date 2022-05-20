@@ -98,6 +98,7 @@ export default {
     &_input {
       justify-self: center;
       margin: 20px;
+      width: 100%;
     }
   }
 
