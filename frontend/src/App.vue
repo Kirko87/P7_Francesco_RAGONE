@@ -13,8 +13,9 @@ import { RouterLink, RouterView } from "vue-router";
 
 <style>
 body {
-  background-image: url(.\assets\icon.png);
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: url(.\assets\meeting.png);
+  background-repeat:no-repeat;
+  background-size:cover;
+    background-color: rgb(194, 241, 241);  
 }
 </style>

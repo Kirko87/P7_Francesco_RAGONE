@@ -53,9 +53,9 @@ export default {
   &_password {
     display: flex;
     justify-content: center;
-    color: rgb(65, 59, 59);
+    color: rgb(255, 255, 255);
     font-size: 1.5rem;
-    text-shadow: 4px 3px 4px rgb(174, 167, 167);
+    text-shadow: 4px 3px 4px rgb(0, 0, 0);
     &_input {
       justify-self: center;
       margin-left: 20px;
@@ -77,7 +77,7 @@ export default {
 
   &_title {
     text-align: center;
-    font-size: 3rem;
+    font-size: 3.5rem;
      text-shadow: 1px 1px 7px rgb(0, 0, 0);
     color: rgb(241, 245, 249);
     margin-bottom: 5rem;
