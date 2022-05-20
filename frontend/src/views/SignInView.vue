@@ -1,9 +1,10 @@
 <template>
-  <img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200" height="200"
+  <img alt="Gruppomania logo" class="logoSign" src="@/assets/icon-left-font-monochrome-black.svg" width="200" height="40"
     background="transparent" />
-
+     <div class="transparentBox">
+       
   <h1 class="signIn_title">SignIn-now!</h1>
-
+<div>
   <div class="signIn">
     <router-link class="signIn_sigInLink" to="/signUp">Sign-up</router-link>
     <router-link class="signIn_logInLink" to="/login">Login</router-link>
@@ -32,8 +33,8 @@
 
     <div class="SignInView_button"><button type="submit">VALIDATE!</button></div>
   </form>
-
-
+</div>
+</div>
 </template>
 
 <script>
@@ -67,6 +68,16 @@ export default {
 </script>
 
 <style lang="scss">
+
+.transparentBox>div{
+  background-color: #f3dada65;
+  border: 1px solid black;
+  opacity: .6;
+  
+}
+.transparentBox div{
+  opacity: 1;
+}
 .SignInView {
 
   &_userName,
@@ -91,6 +102,7 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 70px;
+    margin-bottom: 70px;
   }
 }
 

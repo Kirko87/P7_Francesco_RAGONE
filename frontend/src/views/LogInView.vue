@@ -1,9 +1,9 @@
 <template>
-<img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
-            height="200" background="transparent" />
-
+<img alt="Gruppomania logo" class="logoLog" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+            height="40" background="transparent" />
+ <div class="transparentBoxLogin">
   <h1 class="logIn_title">LogIn-now!</h1>
-  
+  <div>
   <div class="logIn">
 
     <router-link class="logIn_sigInLink" to="/signUp">Sign-up</router-link>
@@ -17,8 +17,10 @@
     <label for="password" class="LogInView_password">Password:<input required class="LogInView_password_input" v-model="password" type="password"
         placeholder=" Votre mot de passe" /></label>
     <div class="LogInView_button"><button type="submit">VALIDATE!</button></div>
+    
   </form>
-
+  </div>
+ </div>
 </template>
 
 <script>
@@ -47,6 +49,26 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  margin: 10%;
+  height: 1000PX;
+  width: auto;
+}
+.logoLog{
+   position: static;
+
+}
+
+.transparentBoxLogin>div{
+  background-color: #f3dada65;
+  border: 1px solid black;
+  opacity: .6;
+  
+}
+.transparentBoxLogin div{
+  opacity: 1;
+}
+
 .LogInView {
 
   &_userName,
@@ -66,6 +88,7 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 70px;
+    margin-bottom: 70px;
   }
 
 }

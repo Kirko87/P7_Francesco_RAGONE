@@ -12,7 +12,7 @@
 
     </head>
     <header>
-        <img alt="Gruppomania logo" class="logo" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+        <img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
             height="40" background="transparent" />
         
     </header>
@@ -20,13 +20,22 @@
     <body>
 
         <h1>Welcome to<br>Groupomania<br>chat!</h1>
-        
+
+        <div class="messageContainer"></div>
     </body>
 
     </html>
 </template>
 
 <style>
+.logoMain{
+ position: static;
+}
+body {
+  margin: 10%;
+  height: 1000PX;
+  width: auto;
+}
 h1 {
     font-weight: 500;
     font-size: 3.6rem;
@@ -37,10 +46,6 @@ h1 {
 
 
   
-}
-
-body{
-    background-color: rgb(194, 241, 241);
 }
 
 </style>
