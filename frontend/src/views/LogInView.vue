@@ -1,26 +1,29 @@
 <template>
-<img alt="Gruppomania logo" class="logoLog" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
-            height="40" background="transparent" />
- <div class="transparentBoxLogin">
+  <img alt="Gruppomania logo" class="logoLog" src="@/assets/icon-left-font-monochrome-black.svg" width="200" height="40"
+    background="transparent" />
+
   <h1 class="logIn_title">LogIn-now!</h1>
-  <div>
-  <div class="logIn">
 
-    <router-link class="logIn_sigInLink" to="/signUp">Sign-up</router-link>
-    <router-link class="logIn_logInLink" to="/login">Login</router-link>
-  </div>
+  <div class="transparentBoxLogin">
 
-  <form class="LogInView" @submit="login">
-    <label for="userName" class="LogInView_userName">User Name:<input required class="LogInView_userName_input" v-model="userName" type="text"
-        placeholder="Votre nom d’utilisateur" /></label>
-    <br>
-    <label for="password" class="LogInView_password">Password:<input required class="LogInView_password_input" v-model="password" type="password"
-        placeholder=" Votre mot de passe" /></label>
-    <div class="LogInView_button"><button type="submit">VALIDATE!</button></div>
-    
-  </form>
+    <div>
+      <div class="logIn">
+
+        <router-link class="logIn_sigInLink" to="/signUp">Sign-up</router-link>
+        <router-link class="logIn_logInLink" to="/login">Login</router-link>
+      </div>
+
+      <form class="LogInView" @submit="login">
+        <label for="userName" class="LogInView_userName">User Name:<input required class="LogInView_userName_input"
+            v-model="userName" type="text" placeholder="Votre nom d’utilisateur" /></label>
+        <br>
+        <label for="password" class="LogInView_password">Password:<input required class="LogInView_password_input"
+            v-model="password" type="password" placeholder=" Votre mot de passe" /></label>
+        <div class="LogInView_button"><button type="submit">VALIDATE!</button></div>
+
+      </form>
+    </div>
   </div>
- </div>
 </template>
 
 <script>
@@ -41,8 +44,11 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email: this.userName, password: this.password })
+
+
       })
     },
+    
   }
 }
 
@@ -54,18 +60,15 @@ body {
   height: 1000PX;
   width: auto;
 }
-.logoLog{
-   position: static;
 
-}
-
-.transparentBoxLogin>div{
+.transparentBoxLogin>div {
   background-color: #f4ad4939;
   border: 4px dotted black;
   opacity: .6;
-  
+  padding: 30px;
 }
-.transparentBoxLogin div{
+
+.transparentBoxLogin div {
   opacity: 1;
 }
 
@@ -78,6 +81,7 @@ body {
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
     text-shadow: 4px 3px 4px rgb(0, 0, 0);
+
     &_input {
       justify-self: center;
       margin: 20px;
@@ -92,7 +96,6 @@ body {
     margin-top: 70px;
     margin-bottom: 70px;
   }
-
 }
 
 .logIn {
@@ -103,7 +106,7 @@ body {
   &_title {
     text-align: center;
     font-size: 3.5rem;
-     text-shadow: 1px 1px 7px rgb(244, 173, 73);
+    text-shadow: 1px 1px 7px rgb(244, 173, 73);
     color: rgb(0, 0, 0);
     margin-bottom: 5rem;
   }
@@ -117,14 +120,14 @@ body {
     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     font-weight: bold;
     font-size: 30px;
- 
+
   }
 
   &_sigInLink:hover {
     left: 0;
     color: rgb(0, 0, 0);
     text-shadow: 7px 1px 14px rgb(59, 59, 59);
-   
+
   }
 
   &_logInLink {

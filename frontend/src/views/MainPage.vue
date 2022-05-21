@@ -12,10 +12,10 @@
 
     </head>
     <header>
-        <img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+        <div><img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
             height="40" 
              background="transparent" />
-        
+        </div>
     </header>
 
     <body>
@@ -29,16 +29,17 @@
 </template>
 
 <style>
-.logoMain{
- position: static;
-
-
-}
 body {
   margin: 10%;
   height: 1000PX;
   width: auto;
 }
+
+.logoMain{
+/* filter: brightness(0) saturate(100%) invert(58%) sepia(100%) saturate(2873%)
+ hue-rotate(143deg) brightness(95%) contrast(104%); */
+}
+
 h1 {
     font-weight: 500;
     font-size: 3.6rem;

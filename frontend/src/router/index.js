@@ -6,12 +6,12 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/LogInView.vue")
-    },
+      component: () => import("../views/LogInView.vue"),
+      },
     {
       path: "/signup",
       name: "signup",
-      component: () => import("../views/SignInView.vue")
+      component: () => import("../views/SignInView.vue"),
     },
     {
       path: "/main",
@@ -20,5 +20,6 @@ const router = createRouter({
     }
   ],
 });
+
 
 export default router;

@@ -1,9 +1,11 @@
 <template>
   <img alt="Gruppomania logo" class="logoSign" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
     height="40" background="transparent" />
+
+  <h1 class="signIn_title">SignIn-now!</h1>
+
   <div class="transparentBox">
 
-    <h1 class="signIn_title">SignIn-now!</h1>
     <div>
       <div class="signIn">
         <router-link class="signIn_sigInLink" to="/signUp">Sign-up</router-link>
@@ -22,8 +24,9 @@
         <label for="email" class="SignInView_email">Email:<input required class="SignInView_email_input" v-model="email"
             type="email" placeholder="Insérer votre email" /></label>
         <br>
-        <label for="email" class="SignInView_re-email">Email (validation):<input required class="SignInView_re-email_input"
-            v-model="reEnterEmail" type="email" placeholder="Ressaisir votre email" /></label>
+        <label for="email" class="SignInView_re-email">Email (validation):<input required
+            class="SignInView_re-email_input" v-model="reEnterEmail" type="email"
+            placeholder="Ressaisir votre email" /></label>
         <br>
         <label for="password" class="SignInView_password">Password:<input required class="SignInView_password_input"
             v-model="password" type="password" placeholder="Introduisez votre mot de passe" /></label>
@@ -63,17 +66,24 @@ export default {
         body: JSON.stringify({ userName: this.userName, name: this.name, surname: this.surname, email: this.email, reEnterEmail: this.reEnterEmail, password: this.password, reEnterPassword: this.reEnterPassword })
       })
     },
+    
   }
 }
 
 </script>
 
 <style lang="scss">
+body {
+  margin: 10%;
+  height: 1000PX;
+  width: auto;
+}
+
 .transparentBox>div {
   background-color: #c2f4f065;
   border: 4px dotted black;
   opacity: .6;
-
+  padding: 30px;
 }
 
 .transparentBox div {
