@@ -55,11 +55,6 @@ export default {
 </script>
 
 <style lang="scss">
-body {
-  margin: 10%;
-  height: 1000PX;
-  width: auto;
-}
 
 .transparentBoxLogin>div {
   background-color: #f4ad4939;
@@ -119,7 +114,7 @@ body {
     color: white;
     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     font-weight: bold;
-    font-size: 30px;
+    font-size: 2rem;
 
   }
 

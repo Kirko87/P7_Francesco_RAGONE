@@ -73,11 +73,6 @@ export default {
 </script>
 
 <style lang="scss">
-body {
-  margin: 10%;
-  height: 1000PX;
-  width: auto;
-}
 
 .transparentBox>div {
   background-color: #c2f4f065;
@@ -142,7 +137,7 @@ body {
     color: white;
     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     font-weight: bold;
-    font-size: 30px;
+    font-size: 2rem;
   }
 
   &_logInLink:hover {
@@ -155,4 +150,35 @@ body {
     color: rgba(251, 37, 37, 0);
   }
 }
+@media (min-width: 768px) {
+.SignInView {
+
+  &_userName,
+  &_name,
+  &_surname,
+  &_email,
+  &_re-email,
+  &_password,
+  &_re-password {
+    display: grid;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    font-size: 1.5rem;
+    text-shadow: 4px 3px 4px rgb(0, 0, 0);
+
+    &_input {
+      justify-self: center;
+      margin: 20px;
+      width: 100%;
+      height: 26px;
+    }
+  }
+
+  &_button {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }
+}}
 </style>
