@@ -82,6 +82,7 @@ body {
       justify-self: center;
       margin: 20px;
       width: 100%;
+      height: 26px;
     }
   }
 

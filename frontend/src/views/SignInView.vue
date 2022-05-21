@@ -22,13 +22,13 @@
         <label for="email" class="SignInView_email">Email:<input required class="SignInView_email_input" v-model="email"
             type="email" placeholder="Insérer votre email" /></label>
         <br>
-        <label for="email" class="SignInView_re-email">Email (val.):<input required class="SignInView_re-email_input"
+        <label for="email" class="SignInView_re-email">Email (validation):<input required class="SignInView_re-email_input"
             v-model="reEnterEmail" type="email" placeholder="Ressaisir votre email" /></label>
         <br>
         <label for="password" class="SignInView_password">Password:<input required class="SignInView_password_input"
             v-model="password" type="password" placeholder="Introduisez votre mot de passe" /></label>
         <br>
-        <label for="password" class="SignInView_re-password">Password (val.):<input required
+        <label for="password" class="SignInView_re-password">Password (validation):<input required
             class="SignInView_re-password_input" v-model="reEnterPassword" type="password"
             placeholder="Ressaisir votre mot de passe" /></label>
 
@@ -99,6 +99,7 @@ export default {
       justify-self: center;
       margin: 20px;
       width: 100%;
+      height: 26px;
     }
   }
 
