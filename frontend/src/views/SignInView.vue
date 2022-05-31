@@ -49,31 +49,56 @@ export default {
       name: null,
       surname: null,
       email: null,
-      reEnterEmail: null,
       password: null,
-      reEnterPassword: null,
     }
   },
   methods: {
-    signIn(event) {
+    async signIn(event) {
       event.preventDefault()
-      fetch("http://localhost:3010/Groupomania/signup", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userName: this.userName, name: this.name, surname: this.surname, email: this.email, reEnterEmail: this.reEnterEmail, password: this.password, reEnterPassword: this.reEnterPassword })
-      })
-    },
-    
+      try {
+        const responseSignUp = await fetch("http://localhost:3010/Groupomania/signup", {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userName: this.userName, name: this.name,
+            surname: this.surname, email: this.email, password: this.password
+          }
+          )
+        })
+        if (responseSignUp.status !== 201) throw ("error")
+        const dataSignUp = await responseSignUp.json()
+
+        //CONDIZIONE per accesso a Main page
+        console.log(dataSignUp)
+        setToken(dataSignUp.token)
+        this.$router.push({
+          name: 'main'
+        })
+      } catch (error) {
+        alert("error de connection")
+        console.log(error);
+      }
+
+    }
+
   }
 }
+
+
+//REGISTRO TOKEN in Local Storage
+async function setToken(token) {
+
+  localStorage.setItem("token", token);
+}
+
+
 
 </script>
 
 <style lang="scss">
-
 .transparentBox>div {
   background-color: #c2f4f065;
   border: 4px dotted black;
@@ -150,35 +175,22 @@ export default {
     color: rgba(251, 37, 37, 0);
   }
 }
+
 @media (min-width: 768px) {
-.SignInView {
 
-  &_userName,
-  &_name,
-  &_surname,
-  &_email,
-  &_re-email,
-  &_password,
-  &_re-password {
-    display: grid;
-    justify-content: center;
-    color: rgb(255, 255, 255);
-    font-size: 1.5rem;
-    text-shadow: 4px 3px 4px rgb(0, 0, 0);
+  .SignInView {
 
-    &_input {
-      justify-self: center;
-      margin: 20px;
-      width: 100%;
-      height: 26px;
+    &_userName,
+    &_name,
+    &_surname,
+    &_email,
+    &_re-email,
+    &_password,
+    &_re-password {
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
     }
-  }
 
-  &_button {
-    display: flex;
-    justify-content: center;
-    margin-top: 70px;
-    margin-bottom: 70px;
   }
-}}
+}
 </style>

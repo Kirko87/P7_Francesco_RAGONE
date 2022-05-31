@@ -1,5 +1,6 @@
 // importazione di bcrypt per l'hash della password
 const bcrypt = require('bcrypt');
+const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('jsonwebtoken');
 
 
@@ -20,7 +21,22 @@ exports.signup = async (req, res, next) => {
       userName: req.body.userName,
     });
     await userList.save();
-    res.status(201).json({ message: 'Utilisateur créé !' })
+    res.status(201).json({
+      newUserInfo: userList,
+      userId: userList.id,
+      // UserId: userList.id,        si puo' selezionare il singolo valore, come nell'esempio
+      // Email: userList.email,
+      // Username: userList.userName,
+      // Name: userList.name,
+      // Surname: userList.surname,
+      token: jwt.sign(
+        { userId: userList.id },
+        process.env.RANDOM_SECRET_KEY,
+        { expiresIn: '24h' },
+      ),
+      
+    })
+
   } catch (error) {
     res.status(400).json({ error: error.message })
     console.error(error)
@@ -42,17 +58,28 @@ exports.login = async (req, res, next) => {
     if (!valid) return res.status(401).json({ error: 'Mot de passe incorrect !' });
 
 
+
     res.status(200).json({
+
       userId: user.id,
       token: jwt.sign(
         { userId: user.id },
         process.env.RANDOM_SECRET_KEY,
-        { expiresIn: '24h' }
+        { expiresIn: '24h' },
+
       )
+
     })
+
+
 
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
   }
+
+
 };
+
+
+

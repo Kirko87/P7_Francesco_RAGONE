@@ -5,13 +5,10 @@ const { autocompleteCommand } = require('cli');
 
 
 //-----TROVA TUTTI I MESSAGGI in home-page
-exports.userTakeList = async (req, res, next) => {
+exports.messageList = async (req, res, next) => {
   try {
-    const users = await Message.findAll();
-    console.log(users.every(user => user instanceof Message)); // true
-    console.log("All users:", JSON.stringify(users, null, 2));
-    const msgHomePage = users
-    res.status(200).json({ messageStatus: 'Messages récupérés !', msgHomePage })
+    const messageInList = await Message.findAll();
+    res.status(200).json(messageInList)
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
@@ -22,10 +19,11 @@ exports.userTakeList = async (req, res, next) => {
 exports.createMsgInList = async (req, res, next) => {
 
   try {
-    const msgInList = await Message.create({ message: "MESSAGGIO personale bacheca", userId: req.auth.userId });
+    const msgInList = await Message.create({ 
+      ...req.body,
+    userId: req.auth.userId });
     console.log("Message's auto-generated ID:", msgInList.id);
-    const msgContent = msgInList.message
-    res.status(201).json({ messageStatus: 'Message créé!', msgContent});
+    res.status(201).json(msgInList);
 
 
   } catch (error) {
@@ -35,7 +33,7 @@ exports.createMsgInList = async (req, res, next) => {
 }
 
 //-----TROVA un messaggio specifico
-exports.userGetOneMsg = async (req, res, next) => {
+exports.getOneMsg = async (req, res, next) => {
   try {
     const msgFind = await Message.findOne({ where: { id: req.params.id } });
     console.log(msgFind.message);
@@ -52,7 +50,7 @@ exports.userGetOneMsg = async (req, res, next) => {
 }
 
 //ELIMINA il tuo messaggio
-exports.userDeleteMsg = async (req, res, next) => {
+exports.deleteMsg = async (req, res, next) => {
   try {
     const msgFind = await Message.findOne({ where: { id: req.params.id } });
     if (msgFind.userId !== req.auth.userId) {
@@ -77,10 +75,9 @@ exports.createComment = async (req, res, next) => {
 
   try {
     await Message.findOne({ id: req.params.id });
-    const cmtInList = await Message.create({ comment: "COMMENTO Esterno", userId: req.auth.userId });
+    const cmtInList = await Message.create({  ...req.body, userId: req.auth.userId });
     console.log("Comment's auto-generated ID:", cmtInList.id);
-    const cmtContent = cmtInList.comment
-    res.status(201).json({ commentStatus: 'Commentaire créé!', cmtContent})
+    res.status(201).json(cmtInList)
 
   } catch (error) {
     res.status(500).json({ error })
@@ -90,7 +87,7 @@ exports.createComment = async (req, res, next) => {
 
 //TROVA Commento
 
-exports.userGetComment = async (req, res, next) => {
+exports.getComment = async (req, res, next) => {
   try {
     const cmtFind = await Message.findOne({ where: { id: req.params.id } });
     console.log(cmtFind.comment);
@@ -107,7 +104,7 @@ exports.userGetComment = async (req, res, next) => {
 }
 
 //ELIMINA commento
-exports.userDeleteComment = async (req, res, next) => {
+exports.deleteComment = async (req, res, next) => {
   try {
     const msgFind = await Message.findOne({ where: { id: req.params.id } });
     if (msgFind.userId !== req.auth.userId) {

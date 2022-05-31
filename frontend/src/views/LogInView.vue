@@ -31,31 +31,57 @@ export default {
   data() {
     return {
       userName: null,
-      password: null
+      password: null,
+
     }
   },
   methods: {
-    login(event) {
+    async login(event) {
       event.preventDefault()
-      fetch("http://localhost:3010/Groupomania/login", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: this.userName, password: this.password })
+      try {
+        const responseLogin = await fetch("http://localhost:3010/Groupomania/login", {
+          method: "post",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: this.userName, password: this.password })
+        }
+        )
+        if (responseLogin.status !== 200) throw ("error")
+        const dataLogin = await responseLogin.json()
+
+        //CONDIZIONE per accesso a Main page
+        console.log(dataLogin);
+        setToken(dataLogin.token)
+        this.$router.push({
+          name: 'main'
+        })
+      } catch (e) {
+        alert("error de connection")
+        console.log(e);
+      }
+    }
 
 
-      })
-    },
-    
   }
+
 }
+
+
+
+
+//REGISTRO TOKEN in Local Storage
+async function setToken(token) {
+
+  localStorage.setItem("token", token);
+}
+
+
 
 </script>
 
 <style lang="scss">
-
 .transparentBoxLogin>div {
   background-color: #f4ad4939;
   border: 4px dotted black;
@@ -128,6 +154,21 @@ export default {
   &_logInLink {
     pointer-events: none;
     color: rgba(251, 37, 37, 0);
+
+  }
+}
+
+@media (min-width: 768px) {
+
+  .LogInView {
+    display: grid;
+
+    &_userName,
+    &_password {
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
+
+    }
 
   }
 }

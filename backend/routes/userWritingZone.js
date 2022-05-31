@@ -7,11 +7,11 @@ const auth = require('../middleware/auth');
 const userController = require('../controllers/userWritingZone');
 
 router.post('/message', auth, multer, userController.createMsgInList);
-router.get('/message', auth, userController.userTakeList);
-router.get('/message/:id', auth, userController.userGetOneMsg);
-router.delete('/message/:id', auth, userController.userDeleteMsg);
+router.get('/message', auth, userController.messageList);
+router.get('/message/:id', auth, userController.getOneMsg);
+router.delete('/message/:id', auth, userController.deleteMsg);
 router.post('/comment', auth, multer, userController.createComment);
-router.get('/message/:id/comment', auth, userController.userGetComment);
-router.delete('/comment/:id', auth, userController.userDeleteComment)
+router.get('/message/:id/comment', auth, userController.getComment);
+router.delete('/comment/:id', auth, userController.deleteComment)
 
 module.exports = router;
