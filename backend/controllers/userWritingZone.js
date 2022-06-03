@@ -7,7 +7,7 @@ const { autocompleteCommand } = require('cli');
 //-----TROVA TUTTI I MESSAGGI in home-page
 exports.messageList = async (req, res, next) => {
   try {
-    const messageInList = await Message.findAll();
+    const messageInList = await Message.findAll({where:{parent:req.params.id || null}});
     res.status(200).json(messageInList)
   } catch (error) {
     res.status(500).json({ error })

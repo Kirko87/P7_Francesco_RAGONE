@@ -39,13 +39,12 @@ const Message = sequelize.define('Message', {
     allowNull: false,
   },
 
-  message: {
-    type: DataTypes.STRING,
-
+  parent:{
+  type: DataTypes.INTEGER
   },
 
-  comment: {
-    type: DataTypes.STRING
+  message: {
+    type: DataTypes.STRING,
   },
 
   imageUrl: {
@@ -53,11 +52,6 @@ const Message = sequelize.define('Message', {
     allowNull: true,
   },
 
-  email: {
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: true
-  }
 
 }, {
   // Other model options go here

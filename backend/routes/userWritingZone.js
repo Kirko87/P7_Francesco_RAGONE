@@ -10,8 +10,7 @@ router.post('/message', auth, multer, userController.createMsgInList);
 router.get('/message', auth, userController.messageList);
 router.get('/message/:id', auth, userController.getOneMsg);
 router.delete('/message/:id', auth, userController.deleteMsg);
-router.post('/comment', auth, multer, userController.createComment);
-router.get('/message/:id/comment', auth, userController.getComment);
-router.delete('/comment/:id', auth, userController.deleteComment)
+router.get('/message/:id/children', auth, userController.messageList);
+
 
 module.exports = router;

@@ -9,12 +9,12 @@
 
         <h1 class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
 
-        <!-- <MessageCreation @onMessageCreated="">
-            <CommentCreation></CommentCreation>
-        </MessageCreation> -->
+        <MessageCreation class="creationMain" @messageCreated="onMessageCreated">
+           
+        </MessageCreation>
         <div class="messageContainer">
 
-            <!-- <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message> -->
+            <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
 
 
         </div>
@@ -25,18 +25,18 @@
 <script>
 import Message from '../components/message.vue';
 import MessageCreation from '../components/messageCreation.vue';
-import CommentCreation from '../components/commentCreation.vue';
+
 
 export default {
     data() {
         return {
             messages: [],
-            comments: []
+       
         }
 
     },
     created() {
-        // this.loadMessages();
+        this.loadMessages();
 
     },
     methods: {
@@ -50,44 +50,39 @@ export default {
             this.messages = await response.json();
         },
         onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.unshift (newMessage)
-        },
-
-        async loadComment() {
-            const response = await fetch("http://localhost:3010/Groupomania/message//comment", {
-                method: "get",
-                headers: {
-                    authorization: "Bearer " + localStorage.getItem("token")
-
-                }
-            });
-            this.comments = await response.json();
-        },
-        onCommentCreated(newComment) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.comments.unshift(newComment)
-
+            this.messages.push (newMessage)
+            console.log("####", newMessage);
         },
 
        
     },
-     components: { Message, MessageCreation, CommentCreation }
+     components: { Message, MessageCreation }
 }
 
 </script>
 
 <style>
+.creationMain {
+     position: fixed;
+    align-self: center;
+    bottom: 3%;
+}
+
 html {
     margin-bottom: 15%;
-    padding: 0;
+    padding: 2rem;
 
 }
 
 .bodyMain {
     display: flex;
     flex-direction: column;
-    align-self: center;
+    
     background-image: none;
     background-color: rgba(146, 221, 165, 0.411);
+
+ 
+  
 }
 
 .main_logOutLink {
@@ -99,7 +94,7 @@ html {
     text-shadow: 1px 1px 7px rgb(0, 0, 0);
     font-weight: bold;
     font-size: 2rem;
-    margin-right: 30px;
+    margin-right: 50px;
     position: fixed;
     right: 0px;
 
@@ -111,6 +106,7 @@ html {
     /* filter: brightness(0) saturate(100%) invert(58%) sepia(100%) saturate(2873%)
  hue-rotate(143deg) brightness(95%) contrast(104%); */
     position: fixed;
+   width: 9rem;
 }
 
 .titreMain {
@@ -128,11 +124,7 @@ html {
 }
 
 .messageContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     margin-top: 70%;
-
-    overflow-y: scroll;
+   
 }
 </style>

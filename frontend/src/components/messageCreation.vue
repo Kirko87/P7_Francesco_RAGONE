@@ -1,10 +1,15 @@
 <template>
-    <form @submit="createMessage" class="textArea"><textarea type="text" v-model="newMessage"></textarea><button
-            type="submit">send</button></form>
+    <form @submit="createMessage" class="textArea"><textarea  class="textArea_text" type="text" v-model="newMessage"></textarea><button
+            class="textArea_button" type="submit">send</button></form>
 </template>
 
 <script>
 export default {
+
+    props:{
+       parent:{}
+    },
+
     data() {
         return {
             newMessage:[],
@@ -13,19 +18,21 @@ export default {
         }
     },
     methods: {
-        async createMessage() {
+        async createMessage(event) {
+            event.preventDefault()
             const response = await fetch("http://localhost:3010/Groupomania/message", {
                 method: "post",
                 headers: {
-                    authorization: "Bearer " + localStorage.getItem("token") //spazio dopo Bearer importante per il codice!
+                    authorization: "Bearer " + localStorage.getItem("token"), //spazio dopo Bearer importante per il codice!
+                    "Content-Type" : "application/json"
                 },
-                body: JSON.stringify({message: this.newMessage})
+                body: JSON.stringify({message: this.newMessage, parent:this.parent})
 
 
             });
           
             console.log(this.newMessage)
-             const message = response.json();
+             const message = await response.json();
              this.$emit("messageCreated", message)
 
         }
@@ -35,21 +42,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .textArea {
     display: flex;
-    justify-content: bottom;
-    position: fixed;
-    align-self: center;
-    bottom: 3%;
-
-}
-
-button {
-    display: flex;
     justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    width: fit-content;
-}
+    }
+  
+
 </style>
