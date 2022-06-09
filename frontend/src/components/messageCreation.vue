@@ -28,7 +28,7 @@ export default {
             formData.append("message", this.newMessage),
             formData.append("image", this.image),
             formData.append("parent", this.parent)
-            const response = await fetch("http://localhost:3010/Groupomania/message", {
+            const response = await fetch("http://localhost:3010/Groupomania/message", formData, {
                 method: "post",
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"),

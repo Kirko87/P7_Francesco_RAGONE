@@ -1,7 +1,7 @@
 <template>
     <div class="msgUserInfo" v-if="user">
         <div class="msgUserInfo_photo"></div>
-        <div class="msgUserInfo_info">{{user}}</div>
+        <div class="msgUserInfo_info">{{user.Username}}</div>
     </div>
 </template>
 
