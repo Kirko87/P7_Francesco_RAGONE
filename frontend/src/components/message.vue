@@ -1,33 +1,40 @@
 <template>
 
-    <div class="message">{{ objectMessage.message }}
+    <div class="message">
 
-        <Message class="" v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
+        <MessageUserInfo :objectMessage="objectMessage"></MessageUserInfo>
+
+        <div class="message_boxMessage">{{ objectMessage.message }}</div>
 
         <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
+         
+        <Message class="" v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
     </div>
-    <br>
+    
 
 </template>
 
 <script>
 import MessageCreation from './messageCreation.vue';
+import MessageUserInfo from './messageUserInfo.vue';
+
+
 
 export default {
     props: {
         objectMessage: Object
     },
+
     data() {
         return {
             messages: [],
-
         }
-
     },
+
     created() {
         this.loadMessages();
-
     },
+
     methods: {
         async loadMessages() {
             const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/children`, {
@@ -38,14 +45,13 @@ export default {
             });
             this.messages = await response.json();
         },
-        onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
+         async onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
             this.messages.push(newMessage)
             console.log("####", newMessage);
         },
-
-
     },
-    components: { MessageCreation }
+
+    components: { MessageCreation, MessageUserInfo }
 }
 
 </script>
@@ -55,10 +61,17 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    word-break:break-all;
-    border: 2px solid black;
-    width: 90%;
-    padding: 0 5%;
+    word-break: break-all;
+    border: 3px dotted black;
 
+    &_boxMessage {
+        height: 4.8rem;
+        margin-bottom: 1.6rem;
+        text-align: center;
+        background-color: rgb(198, 247, 232);
+        border: 3px dashed rgba(43, 222, 228, 0.492);
+        border-style: solid NONE solid;
+
+    }
 }
 </style>

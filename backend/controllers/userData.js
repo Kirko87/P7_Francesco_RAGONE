@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 //importazione del modello
-const { User, Users } = require('../models/User');
+const { User } = require('../models/User');
 //console.log(User);
 
 //signup per accedere come nuovo utilizzatore
@@ -81,5 +81,23 @@ exports.login = async (req, res, next) => {
 
 };
 
+//barra delle informazioni per accedere al nome utilizzatore
 
+exports.infoUser = async (req, res, next) => {
 
+try{
+
+  const user = await User.findOne({ where: { id: req.params.id  } });
+  if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé !' });
+
+  res.status(200).json({
+
+ Username: user.userName
+
+  })
+
+}catch (error) {
+  res.status(500).json({ error })
+  console.error(error);
+}
+}

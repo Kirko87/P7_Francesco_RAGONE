@@ -9,13 +9,10 @@
 
         <h1 class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
 
-        <MessageCreation class="creationMain" @messageCreated="onMessageCreated">
-           
-        </MessageCreation>
+        <MessageCreation class="creationMain" @messageCreated="onMessageCreated"></MessageCreation>
         <div class="messageContainer">
 
             <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
-
 
         </div>
 
@@ -31,7 +28,7 @@ export default {
     data() {
         return {
             messages: [],
-       
+
         }
 
     },
@@ -50,20 +47,20 @@ export default {
             this.messages = await response.json();
         },
         onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.push (newMessage)
+            this.messages.push(newMessage)
             console.log("####", newMessage);
         },
 
-       
+
     },
-     components: { Message, MessageCreation }
+    components: { Message, MessageCreation }
 }
 
 </script>
 
 <style>
 .creationMain {
-     position: fixed;
+    position: fixed;
     align-self: center;
     bottom: 3%;
 }
@@ -77,12 +74,8 @@ html {
 .bodyMain {
     display: flex;
     flex-direction: column;
-    
-    background-image: none;
     background-color: rgba(146, 221, 165, 0.411);
 
- 
-  
 }
 
 .main_logOutLink {
@@ -106,7 +99,7 @@ html {
     /* filter: brightness(0) saturate(100%) invert(58%) sepia(100%) saturate(2873%)
  hue-rotate(143deg) brightness(95%) contrast(104%); */
     position: fixed;
-   width: 9rem;
+    width: 9rem;
 }
 
 .titreMain {
@@ -115,9 +108,8 @@ html {
     color: rgba(17, 10, 10, 0.363);
     text-shadow: 6px 1px 7px rgba(87, 134, 236, 0.5);
     text-align: center;
-    margin-top: 4rem;
-    position: fixed;
-    top: 20%;
+    margin-top: 9rem;
+    position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -125,6 +117,7 @@ html {
 
 .messageContainer {
     margin-top: 70%;
-   
+    overflow: scroll;
+
 }
 </style>

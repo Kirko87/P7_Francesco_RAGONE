@@ -20,8 +20,14 @@ exports.createMsgInList = async (req, res, next) => {
 
   try {
     const msgInList = await Message.create({ 
-      ...req.body,
-    userId: req.auth.userId });
+      message:req.body.message,
+      parent:req.body.parent,
+      image: req.file.filename,
+      userId: req.auth.userId,
+    // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+   });
+   console.log(req.body);
     console.log("Message's auto-generated ID:", msgInList.id);
     res.status(201).json(msgInList);
 
@@ -37,7 +43,7 @@ exports.getOneMsg = async (req, res, next) => {
   try {
     const msgFind = await Message.findOne({ where: { id: req.params.id } });
     console.log(msgFind.message);
-    const msgContent = msgFind.message
+    const msgContent = msgFind
     if (msgContent == null) {
       return res.status(204).json({ messageStatus: 'Message non trouvé!' })
     }
@@ -71,58 +77,58 @@ exports.deleteMsg = async (req, res, next) => {
 };
 
 // CREA un commento 
-exports.createComment = async (req, res, next) => {
+// exports.createComment = async (req, res, next) => {
 
-  try {
-    await Message.findOne({ id: req.params.id });
-    const cmtInList = await Message.create({  ...req.body, userId: req.auth.userId });
-    console.log("Comment's auto-generated ID:", cmtInList.id);
-    res.status(201).json(cmtInList)
+//   try {
+//     await Message.findOne({ id: req.params.id });
+//     const cmtInList = await Message.create({  ...req.body, userId: req.auth.userId });
+//     console.log("Comment's auto-generated ID:", cmtInList.id);
+//     res.status(201).json(cmtInList)
 
-  } catch (error) {
-    res.status(500).json({ error })
-    console.error(error);
-  }
-}
+//   } catch (error) {
+//     res.status(500).json({ error })
+//     console.error(error);
+//   }
+// }
 
 //TROVA Commento
 
-exports.getComment = async (req, res, next) => {
-  try {
-    const cmtFind = await Message.findOne({ where: { id: req.params.id } });
-    console.log(cmtFind.comment);
-    const cmtContent = cmtFind.comment
-    if (cmtContent == null) {
-      return res.status(204).json({ commentStatus: 'Commentaire non trouvé!' })
-    }
-    res.status(200).json({ commentStatus: 'Commentaire trouvé!', cmtContent })
+// exports.getComment = async (req, res, next) => {
+//   try {
+//     const cmtFind = await Message.findOne({ where: { id: req.params.id } });
+//     console.log(cmtFind.comment);
+//     const cmtContent = cmtFind.comment
+//     if (cmtContent == null) {
+//       return res.status(204).json({ commentStatus: 'Commentaire non trouvé!' })
+//     }
+//     res.status(200).json({ commentStatus: 'Commentaire trouvé!', cmtContent })
    
-  } catch (error) {
-    res.status(500).json({ error })
-    console.error(error);
-  }
-}
+//   } catch (error) {
+//     res.status(500).json({ error })
+//     console.error(error);
+//   }
+// }
 
 //ELIMINA commento
-exports.deleteComment = async (req, res, next) => {
-  try {
-    const msgFind = await Message.findOne({ where: { id: req.params.id } });
-    if (msgFind.userId !== req.auth.userId) {
-      return res.status(403).json({ messageStatus: 'Cette message ne vous appartient pas' })
-    }
-    if (msgFind.imageUrl) {
-      const filename = msgFind.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`);
-    }
-    await msgFind.destroy()
-    res.status(200).json({ messageStatus: 'Objet supprimé !' })
+// exports.deleteComment = async (req, res, next) => {
+//   try {
+//     const msgFind = await Message.findOne({ where: { id: req.params.id } });
+//     if (msgFind.userId !== req.auth.userId) {
+//       return res.status(403).json({ messageStatus: 'Cette message ne vous appartient pas' })
+//     }
+//     if (msgFind.imageUrl) {
+//       const filename = msgFind.imageUrl.split('/images/')[1];
+//       fs.unlink(`images/${filename}`);
+//     }
+//     await msgFind.destroy()
+//     res.status(200).json({ messageStatus: 'Objet supprimé !' })
 
 
-  } catch (error) {
-    res.status(500).json({ error })
-    console.error(error);
-  }
-};
+//   } catch (error) {
+//     res.status(500).json({ error })
+//     console.error(error);
+//   }
+// };
 
 // // In molti editor una linea di codice può
 // // essere commentata con la combinazione da tastiera dei tasti Ctrl+/
