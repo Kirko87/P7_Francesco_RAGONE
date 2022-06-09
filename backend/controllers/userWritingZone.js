@@ -21,8 +21,8 @@ exports.createMsgInList = async (req, res, next) => {
   try {
     const msgInList = await Message.create({ 
       message:req.body.message,
-      parent:req.body.parent,
-      image: req.file.filename,
+      parent:req.body.parent || null, //il messaggio parent puo' avere il valore [NULL] o il numero id quando vi si scrive un messaggio/commento e si fa riferimento al primo messaggio (parent)
+      image: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'èl'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
       userId: req.auth.userId,
     // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 

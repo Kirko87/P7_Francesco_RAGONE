@@ -67,7 +67,7 @@ export default {
 
 html {
     margin-bottom: 15%;
-    padding: 2rem;
+    padding: 1rem;
 
 }
 

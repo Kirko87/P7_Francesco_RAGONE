@@ -9,11 +9,6 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <style>
-html {
-  padding: 5%;
-  
-}
-
 body {
   top:0;
   position: relative;

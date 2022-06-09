@@ -8,9 +8,9 @@
 
         <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
          
-        <Message class="" v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
+        <Message  v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
     </div>
-    
+    <br>
 
 </template>
 
@@ -46,7 +46,7 @@ export default {
             this.messages = await response.json();
         },
          async onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.push(newMessage)
+            this.messages.unshift(newMessage)
             console.log("####", newMessage);
         },
     },
@@ -73,5 +73,7 @@ export default {
         border-style: solid NONE solid;
 
     }
+  
 }
+
 </style>

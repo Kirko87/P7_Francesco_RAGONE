@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 //importazione del modello
-const { User } = require('../models/User');
+const { User, Message } = require('../models/User');
 //console.log(User);
 
 //signup per accedere come nuovo utilizzatore
@@ -88,11 +88,14 @@ exports.infoUser = async (req, res, next) => {
 try{
 
   const user = await User.findOne({ where: { id: req.params.id  } });
+  const message = await Message.findOne({ where: { id: req.params.id } });
   if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé !' });
 
   res.status(200).json({
 
- Username: user.userName
+ Username: user.userName,
+ MessageCreation: message.createdAt
+
 
   })
 

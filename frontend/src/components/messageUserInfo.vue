@@ -1,7 +1,8 @@
 <template>
     <div class="msgUserInfo" v-if="user">
         <div class="msgUserInfo_photo"></div>
-        <div class="msgUserInfo_info">{{user.Username}}</div>
+        <div class="msgUserInfo_info">{{ user.Username }} {{ user.MessageCreation }}
+        </div>
     </div>
 </template>
 
@@ -12,7 +13,7 @@ export default {
     },
     data() {
         return {
-            user:null,
+            user: null,
         };
     },
     methods: {
@@ -24,8 +25,8 @@ export default {
                     "Content-Type": "application/json"
                 },
             });
-           this.user=await response.json()
-           
+            this.user = await response.json()
+
         }
     },
     components: {},
@@ -48,16 +49,17 @@ export default {
     &_photo {
         justify-content: center;
         border-bottom: 2px solid rgba(66, 50, 191, 0.678);
-        border-right: 2px solid rgba(24, 91, 190, 0.678);;
+        border-right: 2px solid rgba(24, 91, 190, 0.678);
+        ;
         border-radius: 50%;
         margin-left: 5%;
         width: 3rem;
     }
 
     &_info {
+
         align-self: flex-end;
         margin-left: .5rem;
-        
     }
 }
 </style>
