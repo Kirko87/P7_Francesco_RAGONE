@@ -3,22 +3,31 @@
         <div class="msgUserInfo_photo"></div>
         <div class="msgUserInfo_info">
             <div class="msgUserInfo_info_username">{{ user.Username }}</div>
-            <div class="msgUserInfo_info_createdAt">{{ msg.msgContent.createdAt }}</div>
+            <br>
+            <!-- <div class="msgUserInfo_info_createdAt">{{msg.msgContent.createdAt}}</div> -->
         </div>
     </div>
 </template>
 
 <script>
 export default {
+
     props: {
         objectMessage: Object
     },
+
     data() {
         return {
             user: null,
             msg: null
         };
     },
+
+    created() {
+        this.infoMessagesUser()
+        // this.infoMessagesMsg()
+    },
+
     methods: {
         async infoMessagesUser() {
             const response = await fetch(`http://localhost:3010/Groupomania/user/${this.objectMessage.userId}`, {
@@ -31,23 +40,21 @@ export default {
             this.user = await response.json()
 
         },
-        async infoMessagesMsg() {
-            const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.userId}`, {
-                method: "get",
-                headers: {
-                    authorization: "Bearer " + localStorage.getItem("token"),
-                    "Content-Type": "application/json"
-                },
-            });
-            this.msg = await response.json()
+        //   async infoMessagesMsg() {
+        //         const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.userId}`, {
+        //             method: "get",
+        //             headers: {
+        //                 authorization: "Bearer " + localStorage.getItem("token"),
+        //                 "Content-Type": "application/json"
+        //             },
+        //         });
+        //         this.msg = await response.json()
 
-        }
+        //     },
+
     },
     components: {},
-    created() {
-        this.infoMessagesUser()
-        this.infoMessagesMsg()
-    }
+
 }
 </script>
 
@@ -72,12 +79,12 @@ export default {
     }
 
     &_info {
-
-        align-self: flex-end;
         margin-left: .5rem;
 
         &_username {
             font-size: 1rem;
+            margin-top: 1rem;
+
         }
 
         &_createdAt {

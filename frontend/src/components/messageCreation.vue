@@ -4,9 +4,6 @@
         <input class="textArea_input" type="file" @change="onFileChange">
         <button class="textArea_button" type="submit">send</button>
     </form>
-
-
-
 </template>
 
 <script>
@@ -15,6 +12,7 @@ export default {
     props: {
        
     },
+    
     data() {
         return {
             newMessage: [],

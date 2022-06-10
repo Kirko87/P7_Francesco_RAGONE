@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <RouterView></RouterView>         
-  <!-- <RouterLink></RouterLink> creava un errore "in" "path"  -->
+  <!-- <RouterLink></RouterLink> creava un errore "in" "path" -->
   <!--carica gli input login, ovvero LogInview.vue-->
 </template>
 

@@ -47,7 +47,7 @@ exports.getOneMsg = async (req, res, next) => {
     if (msgContent == null) {
       return res.status(204).json({ messageStatus: 'Message non trouvé!' })
     }
-    res.status(200).json({ messageStatus: 'Message trouvé!', msgContent })
+   res.status(200).json({ messageStatus: 'Message trouvé!', msgContent })
 
   } catch (error) {
     res.status(500).json({ error })

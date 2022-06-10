@@ -1,19 +1,20 @@
 <template>
     <div class="bodyMain">
-        <div><img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+        <div>
+            <img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
                 height="40" background="transparent" />
+
             <div class="logOut">
-                <router-link class="main_logOutLink" to="/login">Logout</router-link>
+                <Logout></Logout>
             </div>
+
         </div>
 
         <h1 class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
 
-        <MessageCreation class="creationMain" @messageCreated="onMessageCreated"></MessageCreation>
         <div class="messageContainer">
-
+            <MessageCreation class="creationMain" @messageCreated="onMessageCreated"></MessageCreation>
             <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
-
         </div>
 
     </div>
@@ -22,6 +23,7 @@
 <script>
 import Message from '../components/message.vue';
 import MessageCreation from '../components/messageCreation.vue';
+import Logout from '../components/logout.vue';
 
 
 export default {
@@ -30,12 +32,13 @@ export default {
             messages: [],
 
         }
-
     },
+
     created() {
         this.loadMessages();
 
     },
+
     methods: {
         async loadMessages() {
             const response = await fetch("http://localhost:3010/Groupomania/message", {
@@ -47,14 +50,16 @@ export default {
             this.messages = await response.json();
         },
         onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.push(newMessage)
+            this.messages.unshift(newMessage)
             console.log("####", newMessage);
         },
 
 
     },
-    components: { Message, MessageCreation }
+
+    components: { Message, MessageCreation, Logout }
 }
+
 
 </script>
 
@@ -65,33 +70,10 @@ export default {
     bottom: 3%;
 }
 
-html {
-    margin-bottom: 15%;
-    padding: 1rem;
-
-}
-
 .bodyMain {
     display: flex;
     flex-direction: column;
     background-color: rgba(146, 221, 165, 0.411);
-
-}
-
-.main_logOutLink {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    text-decoration: none;
-    color: white;
-    text-shadow: 1px 1px 7px rgb(0, 0, 0);
-    font-weight: bold;
-    font-size: 2rem;
-    margin-right: 50px;
-    position: fixed;
-    right: 0px;
-
-
 
 }
 

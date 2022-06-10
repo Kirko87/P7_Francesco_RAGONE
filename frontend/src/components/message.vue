@@ -10,7 +10,7 @@
          
         <Message  v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
     </div>
-    <br>
+
 
 </template>
 
@@ -47,7 +47,7 @@ export default {
         },
          async onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
             this.messages.unshift(newMessage)
-            console.log("####", newMessage);
+            console.log("##hift##", newMessage);
         },
     },
 
