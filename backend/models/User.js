@@ -39,7 +39,6 @@ const Message = sequelize.define('Message', {
     allowNull: false,
   },
 
-
   parent:{
   type: DataTypes.INTEGER
   },

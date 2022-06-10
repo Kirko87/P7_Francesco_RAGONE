@@ -88,14 +88,11 @@ exports.infoUser = async (req, res, next) => {
 try{
 
   const user = await User.findOne({ where: { id: req.params.id  } });
-  const message = await Message.findOne({ where: { id: req.params.id } });
   if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé !' });
 
   res.status(200).json({
 
- Username: user.userName,
- MessageCreation: message.createdAt
-
+ Username: user.userName
 
   })
 
