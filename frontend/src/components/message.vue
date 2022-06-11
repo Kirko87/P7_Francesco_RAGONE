@@ -8,7 +8,7 @@
 
         <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
          
-        <!-- <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message> -->
+        <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
     </div>
 
 
@@ -17,7 +17,7 @@
 <script>
 import MessageCreation from './messageCreation.vue';
 import MessageUserInfo from './messageUserInfo.vue';
-// import Message  from './message.vue';
+
 
 
 
@@ -52,7 +52,7 @@ export default {
         },
     },
 
-    components: { MessageCreation, MessageUserInfo }
+    components: { MessageCreation, MessageUserInfo}
 }
 
 </script>
