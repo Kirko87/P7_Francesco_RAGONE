@@ -8,16 +8,16 @@
 
         <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
          
-        <!-- <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message> -->
+        <Message  v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
     </div>
-
+    <br>
 
 </template>
 
 <script>
-import MessageCreation from './messageCreation.vue';
 import MessageUserInfo from './messageUserInfo.vue';
-// import Message  from './message.vue';
+import MessageCreation from './messageCreation.vue';
+
 
 
 
@@ -33,11 +33,13 @@ export default {
     },
 
     created() {
+        
         this.loadMessages();
     },
 
     methods: {
         async loadMessages() {
+            //  event.preventDefault() //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
             const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/children`, {
                 method: "GET", //si puo' anche omettere perchè di default è "Get"
                 headers: {
@@ -46,8 +48,10 @@ export default {
             });
             this.messages = await response.json();
         },
-         async onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
+         async onMessageCreated(newMessage) {
+              // mettere qui un async davanti alla funzione nn cambia granchè
             this.messages.unshift(newMessage)
+            
             console.log("##hift##", newMessage);
         },
     },

@@ -1,8 +1,15 @@
 <template>
-        <router-link class="main_logOutLink" to="/login">Logout</router-link>
+        <router-link class="main_logOutLink" @click="deleteToken" to="/login">Logout</router-link>
 </template>
 
 <script>
+export default {
+    methods:{
+       async deleteToken(token){
+        localStorage.removeItem("token",token)
+       } 
+    }
+}
 </script>
 
 <style>
