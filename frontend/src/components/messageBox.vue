@@ -7,8 +7,8 @@
         <div class="message_boxMessage">{{ objectMessage.message }}</div>
 
         <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
-         
-        <Message  v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
+          
+        <MessageBox v-for="message in messages" :key="message.id" :objectMessage="message"></MessageBox> 
     </div>
     <br>
 
@@ -17,6 +17,7 @@
 <script>
 import MessageUserInfo from './messageUserInfo.vue';
 import MessageCreation from './messageCreation.vue';
+
 
 
 
@@ -38,8 +39,8 @@ export default {
     },
 
     methods: {
-        async loadMessages() {
-            //  event.preventDefault() //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
+        async loadMessages(event) {
+             event.preventDefault() //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
             const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/children`, {
                 method: "GET", //si puo' anche omettere perchè di default è "Get"
                 headers: {

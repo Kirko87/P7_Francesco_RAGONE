@@ -14,14 +14,14 @@
 
         <div class="messageContainer">
             <MessageCreation class="creationMain" @messageCreated="onMessageCreated"></MessageCreation>
-            <Message v-for="message in messages" :key="message.id" :objectMessage="message"></Message>
+            <MessageBox v-for="message in messages" :key="message.id" :objectMessage="message"></MessageBox>
         </div>
 
     </div>
 </template>
 
 <script>
-import Message from '../components/message.vue';
+import MessageBox from '../components/messageBox.vue';
 import MessageCreation from '../components/messageCreation.vue';
 import Logout from '../components/logout.vue';
 
@@ -41,6 +41,7 @@ export default {
 
     methods: {
         async loadMessages() {
+            
             const response = await fetch("http://localhost:3010/Groupomania/message", {
                 method: "GET", //si puo' anche omettere perchè di default è "Get"
                 headers: {
@@ -57,7 +58,7 @@ export default {
 
     },
 
-    components: { Message, MessageCreation, Logout }
+    components: { MessageBox, MessageCreation, Logout }
 }
 
 
@@ -68,6 +69,7 @@ export default {
     position: fixed;
     align-self: center;
     bottom: 3%;
+    width: 96%;
 }
 
 .bodyMain {
@@ -99,6 +101,7 @@ export default {
 
 .messageContainer {
     margin-top: 70%;
+   margin-bottom: 7rem;
     overflow: scroll;
 
 }
