@@ -24,16 +24,16 @@
         <label for="email" class="SignInView_email">Email:<input required class="SignInView_email_input" v-model="email"
             type="email" placeholder="Insérer votre email" /></label>
         <br>
-        <label for="email" class="SignInView_re-email">Email (validation):<input required
+        <label for="email" class="SignInView_re-email" :data-error="emailError">Email (validation):<input required
             class="SignInView_re-email_input" v-model="reEnterEmail" type="email"
-            placeholder="Ressaisir votre email" /></label>
+            placeholder="Ressaisir votre email" /><div class="SignInView_re-email_error">email validation error</div></label>
         <br>
         <label for="password" class="SignInView_password">Password:<input required class="SignInView_password_input"
             v-model="password" type="password" placeholder="Introduisez votre mot de passe" /></label>
         <br>
-        <label for="password" class="SignInView_re-password">Password (validation):<input required
+        <label for="password" class="SignInView_re-password" :data-error="passwordError">Password (validation):<input required
             class="SignInView_re-password_input" v-model="reEnterPassword" type="password"
-            placeholder="Ressaisir votre mot de passe" /></label>
+            placeholder="Ressaisir votre mot de passe" /><div class="SignInView_re-password_error">password validation error</div></label>
 
         <div class="SignInView_button"><button type="submit">VALIDATE!</button></div>
       </form>
@@ -49,13 +49,33 @@ export default {
       name: null,
       surname: null,
       email: null,
+      reEnterEmail:null,
       password: null,
+      reEnterPassword: null,
+      emailError: false,
+      passwordError: false
     }
   },
   methods: {
     async signIn(event) {
       event.preventDefault()
       try {
+
+       let errorCheck = false ;
+       this.emailError= false;
+       this.passwordError = false;
+      
+       if (this.reEnterEmail !== this.email){
+         errorCheck = true;
+         this.emailError = true;
+        }
+
+      if(this.reEnterPassword !== this.password){
+        
+        errorCheck = true;
+        this.passwordError = true;
+      }
+      if (errorCheck==true){return}
         const responseSignUp = await fetch("http://localhost:3010/Groupomania/signup", {
           method: "post",
           headers: {
@@ -69,6 +89,7 @@ export default {
           )
         })
         if (responseSignUp.status !== 201) throw ("error")
+
         const dataSignUp = await responseSignUp.json()
 
         //CONDIZIONE per accesso a Main page
@@ -78,10 +99,24 @@ export default {
           name: 'main'
         })
       } catch (error) {
-        alert("error de connection")
+        alert("error de connection" )
         console.log(error);
-      }
-
+      } 
+     
+//      try{
+//       if (this.email !== this.re_email) throw ("error2")
+//      }catch(error2){
+//         alert("error mail")
+//         console.log(error2);
+//         return
+//      }
+// try{
+//       if (this.password !== this.re_password) throw ("error3")
+//      }catch(error3){
+//         alert("error password")
+//         console.log(error3);
+//         return
+//      }
     }
 
   }
@@ -124,12 +159,27 @@ async function setToken(token) {
     color: rgb(255, 255, 255);
     font-size: 1.5rem;
     text-shadow: 4px 3px 4px rgb(0, 0, 0);
-
+    &_error {
+      display: none;
+    }
     &_input {
       justify-self: center;
       margin: 20px;
       width: 100%;
       height: 26px;
+    }
+    $parent:&;
+    &[data-error=true]{
+      #{$parent}{
+        &_error{
+          display: block;
+          color: red;
+          
+          }
+        &_input{
+          border:1px solid red;
+        }
+      }
     }
   }
 

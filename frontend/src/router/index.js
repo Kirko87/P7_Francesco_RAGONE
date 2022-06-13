@@ -14,12 +14,26 @@ const router = createRouter({
       component: () => import("../views/SignInView.vue"),
     },
     {
-      path: "/",
+      path: "/:parent?",
       name: "main",
-      component: () => import("../views/MainPage.vue")
+      component: () => import("../views/MainPage.vue"),
+      props:true
     }
   ],
+
 });
 
+router.beforeEach(async (to, from) => {
+  if (
+    // make sure the user is authenticated
+    !localStorage.getItem("token") &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'login' &&
+    to.name !== 'signup'
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
+  }
+})
 
 export default router;

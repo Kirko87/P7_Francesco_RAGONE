@@ -10,11 +10,11 @@
 
         </div>
 
-        <h1 class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
-
+        <h1 v-if="!parent" class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
+        <MessageBox v-else-if="parentMessage" :objectMessage="parentMessage"></MessageBox>
         <div class="messageContainer">
-            <MessageCreation class="creationMain" @messageCreated="onMessageCreated"></MessageCreation>
-            <MessageBox v-for="message in messages" :key="message.id" :objectMessage="message"></MessageBox>
+            <MessageCreation class="creationMain" :parent="parent" @messageCreated="onMessageCreated"></MessageCreation>
+            <MessageBox v-for="message in reverseMessageList" :key="message.id" :objectMessage="message"></MessageBox>
         </div>
 
     </div>
@@ -26,23 +26,34 @@ import MessageCreation from '../components/messageCreation.vue';
 import Logout from '../components/logout.vue';
 
 
+
 export default {
+
+    props: {
+        parent: Number
+    },
+
+
     data() {
         return {
             messages: [],
-
+            parentMessage: null,
         }
     },
 
+
     created() {
         this.loadMessages();
-
+        this.loadParent();
     },
 
     methods: {
         async loadMessages() {
-            
-            const response = await fetch("http://localhost:3010/Groupomania/message", {
+            let url = "http://localhost:3010/Groupomania/message"
+            if (this.parent) {
+                url = `http://localhost:3010/Groupomania/message/${this.parent}/children`
+            }
+            const response = await fetch(url, {
                 method: "GET", //si puo' anche omettere perchè di default è "Get"
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token") //spazio dopo Bearer importante per il codice!
@@ -51,14 +62,36 @@ export default {
             this.messages = await response.json();
         },
         onMessageCreated(newMessage) { // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.unshift(newMessage)
-            console.log("####", newMessage);
+            this.messages.push(newMessage)
+            console.log("##MainPage-newMessage##", newMessage);
         },
+        async loadParent() {
+            if (!this.parent) { return }
+            const response = await fetch(`http://localhost:3010/Groupomania/message/${this.parent}`, {
+                method: "GET", //si puo' anche omettere perchè di default è "Get"
+                headers: {
+                    authorization: "Bearer " + localStorage.getItem("token"), //spazio dopo Bearer importante per il codice!
+                }
+            });
+            this.parentMessage = await response.json();
 
+        }
 
     },
 
-    components: { MessageBox, MessageCreation, Logout }
+    components: { MessageBox, MessageCreation, Logout },
+    computed:{
+         reverseMessageList(){
+
+            return [...this.messages].reverse()
+         }
+    },
+    watch: {
+        parent() {
+            this.loadMessages();
+            this.loadParent();
+        }
+    }
 }
 
 
@@ -101,7 +134,7 @@ export default {
 
 .messageContainer {
     margin-top: 70%;
-   margin-bottom: 7rem;
+    margin-bottom: 7rem;
     overflow: scroll;
 
 }

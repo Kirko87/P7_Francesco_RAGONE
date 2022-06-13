@@ -1,8 +1,8 @@
 <template>
-    <form @submit="createMessage" class="textArea" enctype="multipart/form-data" method="post">
+    <form @submit="createMessage" class="textArea">
         <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"></textarea>
         <input class="textArea_input" type="file" @change="onFileChange">
-        <button class="textArea_button" type="submit">send</button>
+        <button  class="textArea_button" type="submit">send</button> <!--v-if="parent == null"-->
     </form>
 </template>
 
@@ -10,28 +10,28 @@
 
 export default {
     props: {
-       
+       parent:Number
     },
     
     data() {
         return {
             newMessage: [],
             image: null,
-            parent: []
         };
     },
     methods: {
         async createMessage(event) {
             event.preventDefault();
-            const formData = new FormData()
-            formData.append("message", this.newMessage),
-                formData.append("image", this.image),
-                formData.append("parent", this.parent)
+            let formData = new FormData()
+            formData.append("message", this.newMessage)
+                formData.append("image", this.image)
+                if (this.parent)
+                formData.append("parent", this.parent) //ligna che da problemi ( valore null invece di [NULL] IN DBeaver)
             const response = await fetch("http://localhost:3010/Groupomania/message", {
                 method: "post",
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"),
-                    // "Content-Type": "multipart/form-data",
+                    // "Content-Type": "multipart/form-data", 
                     // "Accept": "multipart/form-data",
                 },
                 body: formData

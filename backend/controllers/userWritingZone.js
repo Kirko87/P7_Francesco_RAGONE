@@ -2,6 +2,7 @@ const { Message, User } = require('../models/User')
 const fs = require('fs');
 const express = require("express");
 const { autocompleteCommand } = require('cli');
+const { send } = require('process');
 
 
 //-----TROVA TUTTI I MESSAGGI in home-page
@@ -13,6 +14,19 @@ exports.messageList = async (req, res, next) => {
     res.status(500).json({ error })
     console.error(error);
   }
+}
+//-----Ex
+exports.messageCount = async (req, res, next) => {
+
+  try {
+    const messageInList = await Message.count({where:{parent:req.params.id || null}});
+    res.set("authorization",messageInList).sendStatus(204)
+  } catch (error) {
+    res.status(500).json({ error })
+    console.error(error);
+  }
+
+  
 }
 
 //-----CREA MESSAGGI in home-page
@@ -47,7 +61,7 @@ exports.getOneMsg = async (req, res, next) => {
     if (msgContent == null) {
       return res.status(204).json({ messageStatus: 'Message non trouvé!' })
     }
-   res.status(200).json({ messageStatus: 'Message trouvé!', msgContent })
+   res.status(200).json( msgContent )
 
   } catch (error) {
     res.status(500).json({ error })

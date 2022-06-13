@@ -1,15 +1,13 @@
 <template>
 
-    <div class="message">
+    <router-link class="message" :to="{name:'main', params:{parent:objectMessage.id}}">
 
         <MessageUserInfo :objectMessage="objectMessage"></MessageUserInfo>
 
         <div class="message_boxMessage">{{ objectMessage.message }}</div>
 
-        <MessageCreation :parent="objectMessage.id" @messageCreated="onMessageCreated"></MessageCreation>
-          
-        <MessageBox v-for="message in messages" :key="message.id" :objectMessage="message"></MessageBox> 
-    </div>
+        <div class="message_comments">{{messagesCount}}</div>
+    </router-link>
     <br>
 
 </template>
@@ -17,6 +15,8 @@
 <script>
 import MessageUserInfo from './messageUserInfo.vue';
 import MessageCreation from './messageCreation.vue';
+import { computed } from '@vue/reactivity';
+
 
 
 
@@ -29,32 +29,31 @@ export default {
 
     data() {
         return {
-            messages: [],
+            messagesCount:0,
         }
     },
 
     created() {
-        
+
         this.loadMessages();
     },
 
     methods: {
-        async loadMessages(event) {
-             event.preventDefault() //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
+        async loadMessages() {
+            console.log(this.objectMessage)
+            //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
             const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/children`, {
-                method: "GET", //si puo' anche omettere perchè di default è "Get"
+                method: "HEAD", 
                 headers: {
-                    authorization: "Bearer " + localStorage.getItem("token") //spazio dopo Bearer importante per il codice!
+                    authorization: "Bearer " + localStorage.getItem("token"), //spazio dopo Bearer importante per il codice!
                 }
             });
-            this.messages = await response.json();
-        },
-         async onMessageCreated(newMessage) {
-              // mettere qui un async davanti alla funzione nn cambia granchè
-            this.messages.unshift(newMessage)
+            console.log(...response.headers);
+            this.messagesCount = response.headers.count;
             
-            console.log("##hift##", newMessage);
         },
+       
+
     },
 
     components: { MessageCreation, MessageUserInfo }
@@ -79,7 +78,6 @@ export default {
         border-style: solid NONE solid;
 
     }
-  
-}
 
+}
 </style>
