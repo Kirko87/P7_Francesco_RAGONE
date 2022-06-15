@@ -1,8 +1,10 @@
 <template>
     <form @submit="createMessage" class="textArea">
-        <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"></textarea>
+        <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"
+           ></textarea>
         <input class="textArea_input" type="file" @change="onFileChange">
-        <button  class="textArea_button" type="submit">send</button> <!--v-if="parent == null"-->
+        <button class="textArea_button" type="submit" @click="createMessage">send</button>
+        <!--v-if="parent == null"-->
     </form>
 </template>
 
@@ -10,13 +12,14 @@
 
 export default {
     props: {
-       parent:Number
+        parent: Number
     },
-    
+
     data() {
         return {
             newMessage: [],
             image: null,
+
         };
     },
     methods: {
@@ -24,8 +27,8 @@ export default {
             event.preventDefault();
             let formData = new FormData()
             formData.append("message", this.newMessage)
-                formData.append("image", this.image)
-                if (this.parent)
+            formData.append("image", this.image)
+            if (this.parent)
                 formData.append("parent", this.parent) //ligna che da problemi ( valore null invece di [NULL] IN DBeaver)
             const response = await fetch("http://localhost:3010/Groupomania/message", {
                 method: "post",
@@ -39,13 +42,19 @@ export default {
             });
             console.log(this.newMessage);
             const message = await response.json();
+
             this.$emit("messageCreated", message);
+            this.newMessage = "";//con "@click="createMessage"" sul button, pulisce la textarea 
+
+
+
         },
-        async onFileChange(event) {
+        async onFileChange(event) { //bottone per caricare immagini
 
             this.image = event.target.files[0]
             console.log(this.image);
-        }
+
+        },
 
     },
     components: {}
@@ -80,6 +89,7 @@ export default {
         width: 20%;
         background-color: rgba(41, 101, 153, 0.74);
         margin-bottom: 1rem;
+        flex: 1;
 
     }
 }

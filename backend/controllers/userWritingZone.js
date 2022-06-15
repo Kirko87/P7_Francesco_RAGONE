@@ -3,6 +3,7 @@ const fs = require('fs');
 const express = require("express");
 const { autocompleteCommand } = require('cli');
 const { send } = require('process');
+const { normalize } = require('path');
 
 
 //-----TROVA TUTTI I MESSAGGI in home-page
@@ -15,12 +16,12 @@ exports.messageList = async (req, res, next) => {
     console.error(error);
   }
 }
-//-----Ex
+//-----CONTA messaggi-children(commenti)
 exports.messageCount = async (req, res, next) => {
 
   try {
     const messageInList = await Message.count({where:{parent:req.params.id || null}});
-    res.set("authorization",messageInList).sendStatus(204)
+    res.status(200).send(""+ messageInList)
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
@@ -29,6 +30,8 @@ exports.messageCount = async (req, res, next) => {
   
 }
 
+
+
 //-----CREA MESSAGGI in home-page
 exports.createMsgInList = async (req, res, next) => {
 
@@ -36,13 +39,14 @@ exports.createMsgInList = async (req, res, next) => {
     const msgInList = await Message.create({ 
       message:req.body.message,
       parent:req.body.parent || null, //il messaggio parent puo' avere il valore [NULL] o il numero id quando vi si scrive un messaggio/commento e si fa riferimento al primo messaggio (parent)
-      image: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'èl'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
+      image: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'è l'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
       userId: req.auth.userId,
     // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 
    });
    console.log(req.body);
     console.log("Message's auto-generated ID:", msgInList.id);
+   
     res.status(201).json(msgInList);
 
 
@@ -79,6 +83,7 @@ exports.deleteMsg = async (req, res, next) => {
     if (msgFind.imageUrl) {
       const filename = msgFind.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`);
+     
     }
     await msgFind.destroy()
     res.status(200).json({ messageStatus: 'Objet supprimé !' })
@@ -87,62 +92,39 @@ exports.deleteMsg = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
+    
   }
 };
 
-// CREA un commento 
-// exports.createComment = async (req, res, next) => {
+// //MODIFICA un messaggio
 
-//   try {
-//     await Message.findOne({ id: req.params.id });
-//     const cmtInList = await Message.create({  ...req.body, userId: req.auth.userId });
-//     console.log("Comment's auto-generated ID:", cmtInList.id);
-//     res.status(201).json(cmtInList)
+exports.modifyMsg = async (req, res, next) => {
+  try{
+  
+    const msgModify = await Message.findOne({where:{ id: req.params.id }})
+    
+      if (msgModify.userId !== req.auth.userId) {
+        return res.status(400).json({message: 'Cette message ne vous appartient pas'});
+      }
+      const msgObject = req.file ?
+  
+      {
+        ...JSON.parse(req.body.message),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      } : { ...req.body };
+  
+     
+  
+    Message.upsert({ where:{ message:req.body.message }}, { ...msgObject, message: req.body.message  })
+      .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+      .catch(error => res.status(400).json({ error }));
+  
+  }catch(error){console.error(error)
+    res.status(500).json({ error })}
+    
+    
+  };
 
-//   } catch (error) {
-//     res.status(500).json({ error })
-//     console.error(error);
-//   }
-// }
-
-//TROVA Commento
-
-// exports.getComment = async (req, res, next) => {
-//   try {
-//     const cmtFind = await Message.findOne({ where: { id: req.params.id } });
-//     console.log(cmtFind.comment);
-//     const cmtContent = cmtFind.comment
-//     if (cmtContent == null) {
-//       return res.status(204).json({ commentStatus: 'Commentaire non trouvé!' })
-//     }
-//     res.status(200).json({ commentStatus: 'Commentaire trouvé!', cmtContent })
-   
-//   } catch (error) {
-//     res.status(500).json({ error })
-//     console.error(error);
-//   }
-// }
-
-//ELIMINA commento
-// exports.deleteComment = async (req, res, next) => {
-//   try {
-//     const msgFind = await Message.findOne({ where: { id: req.params.id } });
-//     if (msgFind.userId !== req.auth.userId) {
-//       return res.status(403).json({ messageStatus: 'Cette message ne vous appartient pas' })
-//     }
-//     if (msgFind.imageUrl) {
-//       const filename = msgFind.imageUrl.split('/images/')[1];
-//       fs.unlink(`images/${filename}`);
-//     }
-//     await msgFind.destroy()
-//     res.status(200).json({ messageStatus: 'Objet supprimé !' })
-
-
-//   } catch (error) {
-//     res.status(500).json({ error })
-//     console.error(error);
-//   }
-// };
 
 // // In molti editor una linea di codice può
 // // essere commentata con la combinazione da tastiera dei tasti Ctrl+/

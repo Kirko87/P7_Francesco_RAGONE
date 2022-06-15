@@ -3,13 +3,19 @@
         <div class="msgUserInfo_photo"></div>
         <div class="msgUserInfo_info">
             <div class="msgUserInfo_info_username">{{ user.Username }}</div>
-            <br>
-            <!-- <div class="msgUserInfo_info_createdAt">{{msg.msgContent.createdAt}}</div> -->
+
         </div>
+
+        <button class="msgUserInfo_messageDelete" @click.stop.prevent="deleteMsg">X</button>
+
     </div>
+    <div class="msgUserInfo_info_createdAt">{{ objectMessage.createdAt }}</div>
 </template>
 
 <script>
+
+import  JWT  from 'jsonwebtoken';
+
 export default {
 
     props: {
@@ -25,7 +31,7 @@ export default {
 
     created() {
         this.infoMessagesUser()
-        // this.infoMessagesMsg()
+        
     },
 
     methods: {
@@ -40,20 +46,28 @@ export default {
             this.user = await response.json()
 
         },
-        //   async infoMessagesMsg() {
-        //         const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.userId}`, {
-        //             method: "get",
-        //             headers: {
-        //                 authorization: "Bearer " + localStorage.getItem("token"),
-        //                 "Content-Type": "application/json"
-        //             },
-        //         });
-        //         this.msg = await response.json()
 
-        //     },
+        async deleteMsg() {
+               await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}`, {
+                method: "DELETE",
+                headers: {
+                    authorization: "Bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json"
+                },
+            });
+            this.eventBus.emit("deleteMsg",this.objectMessage.id)
+            
+        }
 
     },
     components: {},
+    computed: {
+        canBeDelete(){
+            const tokenUser = localStorage.getItem("token")
+            const tokenVerify = JWT.decode(tokenUser)
+            return(this.user.id === tokenVerify.userId )
+        }
+    }
 
 }
 </script>
@@ -63,8 +77,8 @@ export default {
 .msgUserInfo {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     border-bottom: 2px solid rgba(75, 70, 218, 0.15);
-    margin-bottom: 2rem;
     height: 3rem;
     background-color: rgba(184, 220, 250, 0.818);
 
@@ -76,20 +90,29 @@ export default {
         border-radius: 50%;
         margin-left: 5%;
         width: 3rem;
+        object-fit: cover;
     }
 
     &_info {
         margin-left: .5rem;
+        flex: 1;
 
         &_username {
             font-size: 1rem;
             margin-top: 1rem;
-
         }
 
         &_createdAt {
-            font-size: .7rem;
+            font-size: 1rem;
+            margin: 1rem 0;
         }
+    }
+
+    &_messageDelete {
+
+        background-color: rgba(255, 0, 0, 0.405);
+        margin-right: 0;
+        
     }
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-
     <router-link class="message" :to="{name:'main', params:{parent:objectMessage.id}}">
 
         <MessageUserInfo :objectMessage="objectMessage"></MessageUserInfo>
@@ -40,16 +39,15 @@ export default {
 
     methods: {
         async loadMessages() {
-            console.log(this.objectMessage)
-            //previene creazioneinfinita messaggi della pagina Main, quando l'utente non è loggato
-            const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/children`, {
-                method: "HEAD", 
+           
+            const response = await fetch(`http://localhost:3010/Groupomania/message/${this.objectMessage.id}/childrenCount`, {
+                method: "GET", 
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"), //spazio dopo Bearer importante per il codice!
                 }
             });
-            console.log(...response.headers);
-            this.messagesCount = response.headers.count;
+            console.log(response);
+            this.messagesCount = await response.text();
             
         },
        
@@ -57,6 +55,7 @@ export default {
     },
 
     components: { MessageCreation, MessageUserInfo }
+  
 }
 
 </script>
@@ -68,6 +67,9 @@ export default {
     overflow-y: scroll;
     word-break: break-all;
     border: 3px dotted black;
+    text-decoration: none;
+    // align-self:center; //restringo messaggio parent
+    // margin-top: 23%;
 
     &_boxMessage {
         height: 4.8rem;
@@ -78,6 +80,18 @@ export default {
         border-style: solid NONE solid;
 
     }
-
+    &_comments{
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        justify-content: center;
+        border: 3px solid rgba(68, 68, 214, 0.595);
+        border-radius:1rem;
+        padding: .2rem;
+        margin-bottom: .2rem;
+        background-color: rgb(157, 244, 218);
+        width: 1.4rem;
+       
+    }
 }
 </style>

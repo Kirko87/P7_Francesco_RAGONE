@@ -1,18 +1,21 @@
 <template>
     <div class="bodyMain">
         <div>
-            <img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
-                height="40" background="transparent" />
+            <router-link to="/"><img alt="Gruppomania logo" class="logoMain" src="@/assets/icon-left-font-monochrome-black.svg" width="200"
+                height="40" background="transparent" /></router-link>
 
             <div class="logOut">
                 <Logout></Logout>
             </div>
 
         </div>
-
+        <h1 v-if="parent" id="parentH1">&#8673; back</h1>
         <h1 v-if="!parent" class="titreMain">Welcome to<br>Groupomania<br>chat!</h1>
-        <MessageBox v-else-if="parentMessage" :objectMessage="parentMessage"></MessageBox>
+          
+        <MessageBox v-else-if="parentMessage" :key="parentMessage.id" :objectMessage="parentMessage"></MessageBox>
+          
         <div class="messageContainer">
+            
             <MessageCreation class="creationMain" :parent="parent" @messageCreated="onMessageCreated"></MessageCreation>
             <MessageBox v-for="message in reverseMessageList" :key="message.id" :objectMessage="message"></MessageBox>
         </div>
@@ -24,6 +27,8 @@
 import MessageBox from '../components/messageBox.vue';
 import MessageCreation from '../components/messageCreation.vue';
 import Logout from '../components/logout.vue';
+
+
 
 
 
@@ -45,6 +50,7 @@ export default {
     created() {
         this.loadMessages();
         this.loadParent();
+        this.eventBus.on("deleteMsg", this.onMessageDelete)
     },
 
     methods: {
@@ -75,6 +81,14 @@ export default {
             });
             this.parentMessage = await response.json();
 
+        },
+        onMessageDelete(messageId){
+            if(this.parent === messageId){
+                this.$router.push({name:"main"})
+                return
+            }
+          this.messages = this.messages.filter(msg =>msg.id !== messageId)
+          
         }
 
     },
@@ -98,6 +112,12 @@ export default {
 </script>
 
 <style>
+#parentH1{
+    margin-left: 2.4rem;
+    margin-top: 2rem;
+    font-size: 2rem;
+    color: rgba(18, 51, 51, 0.447);
+}
 .creationMain {
     position: fixed;
     align-self: center;
@@ -138,4 +158,5 @@ export default {
     overflow: scroll;
 
 }
+
 </style>

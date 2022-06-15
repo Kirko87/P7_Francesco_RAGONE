@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,7 +18,7 @@ const router = createRouter({
       path: "/:parent?",
       name: "main",
       component: () => import("../views/MainPage.vue"),
-      props:true
+      props:route => ({parent:parseInt(route.params.parent)})
     }
   ],
 
