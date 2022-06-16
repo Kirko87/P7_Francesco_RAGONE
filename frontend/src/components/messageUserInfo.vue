@@ -6,7 +6,7 @@
 
         </div>
 
-        <button class="msgUserInfo_messageDelete" @click.stop.prevent="deleteMsg">X</button>
+        <button v-if="canBeDelete" class="msgUserInfo_messageDelete" @click.stop.prevent="deleteMsg">X</button>
 
     </div>
     <div class="msgUserInfo_info_createdAt">{{ objectMessage.createdAt }}</div>
@@ -14,7 +14,7 @@
 
 <script>
 
-import  JWT  from 'jsonwebtoken';
+// import  JWT  from 'jsonwebtoken';
 
 export default {
 
@@ -64,12 +64,25 @@ export default {
     computed: {
         canBeDelete(){
             const tokenUser = localStorage.getItem("token")
-            const tokenVerify = JWT.decode(tokenUser)
-            return(this.user.id === tokenVerify.userId )
+            const tokenVerify = parseJwt(tokenUser)
+            console.log(tokenVerify,this.user);
+            
+
+            return(this.objectMessage.userId === tokenVerify.userId || tokenVerify.role === 'Admin')
         }
     }
 
 }
+
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
 </script>
 
 
@@ -110,7 +123,7 @@ export default {
 
     &_messageDelete {
 
-        background-color: rgba(255, 0, 0, 0.405);
+        background-color: rgba(255, 34, 0, 0.447);
         margin-right: 0;
         
     }

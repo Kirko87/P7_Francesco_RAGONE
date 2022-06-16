@@ -1,10 +1,10 @@
 <template>
     <form @submit="createMessage" class="textArea">
-        <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"
-           ></textarea>
-        <input class="textArea_input" type="file" @change="onFileChange">
-        <button class="textArea_button" type="submit" @click="createMessage">send</button>
-        <!--v-if="parent == null"-->
+
+        <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"></textarea>
+        <input class="textArea_input" type="file" @change="onFileChange" ref="image">
+        <button class="textArea_button" type="submit" @click="createMessage" >send</button>
+
     </form>
 </template>
 
@@ -43,9 +43,16 @@ export default {
             console.log(this.newMessage);
             const message = await response.json();
 
+    //        if (imageUrl !== null){
+
+    //       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
+
+    //    }
+
             this.$emit("messageCreated", message);
             this.newMessage = "";//con "@click="createMessage"" sul button, pulisce la textarea 
-
+             this.image= null;//non tiene in memoria il file dopo l'invio, anche se resta il nome del file inviato
+             this.$refs.image.value=""
 
 
         },
@@ -53,6 +60,8 @@ export default {
 
             this.image = event.target.files[0]
             console.log(this.image);
+          
+         
 
         },
 

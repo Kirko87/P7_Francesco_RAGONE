@@ -6,11 +6,22 @@ const { send } = require('process');
 const { normalize } = require('path');
 
 
+
+function messageNormalizer(message,req) {
+  return {
+    ...message.toJSON(),
+    imageUrl: message.imageUrl && `${req.protocol}://${req.get('host')}/images/${message.imageUrl}`
+    
+  }
+}
+
+
+
 //-----TROVA TUTTI I MESSAGGI in home-page
 exports.messageList = async (req, res, next) => {
   try {
     const messageInList = await Message.findAll({where:{parent:req.params.id || null}});
-    res.status(200).json(messageInList)
+    res.status(200).json(messageInList.map(msg=>messageNormalizer(msg,req)))
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
@@ -39,15 +50,25 @@ exports.createMsgInList = async (req, res, next) => {
     const msgInList = await Message.create({ 
       message:req.body.message,
       parent:req.body.parent || null, //il messaggio parent puo' avere il valore [NULL] o il numero id quando vi si scrive un messaggio/commento e si fa riferimento al primo messaggio (parent)
-      image: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'è l'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
+      imageUrl: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'è l'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
       userId: req.auth.userId,
-    // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      
+       
+
+          // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
+
+       
+    
+     
+    
+     
 
    });
    console.log(req.body);
     console.log("Message's auto-generated ID:", msgInList.id);
    
-    res.status(201).json(msgInList);
+    res.status(201).json(messageNormalizer(msgInList, req));
+
 
 
   } catch (error) {
@@ -55,6 +76,11 @@ exports.createMsgInList = async (req, res, next) => {
     console.error(error);
   }
 }
+
+
+
+
+
 
 //-----TROVA un messaggio specifico
 exports.getOneMsg = async (req, res, next) => {
@@ -65,7 +91,7 @@ exports.getOneMsg = async (req, res, next) => {
     if (msgContent == null) {
       return res.status(204).json({ messageStatus: 'Message non trouvé!' })
     }
-   res.status(200).json( msgContent )
+   res.status(200).json( messageNormalizer(msgContent, req) )
 
   } catch (error) {
     res.status(500).json({ error })
@@ -77,12 +103,24 @@ exports.getOneMsg = async (req, res, next) => {
 exports.deleteMsg = async (req, res, next) => {
   try {
     const msgFind = await Message.findOne({ where: { id: req.params.id } });
-    if (msgFind.userId !== req.auth.userId) {
+    if (!(msgFind.userId === req.auth.userId || req.auth.role === "Admin")) {
       return res.status(403).json({ messageStatus: 'Cette message ne vous appartient pas' })
     }
+
+
+
+    // var fs = require('fs');
+    // fs.readFile('readMe.txt', 'utf8', function (err, data) {
+    //  fs.writeFile('writeMe.txt', data, function(err, result) {
+    //     if(err) console.log('error', err);
+    //   });
+    // });
+
+
+
     if (msgFind.imageUrl) {
-      const filename = msgFind.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`);
+      
+      fs.unlinkSync(`images/${msgFind.imageUrl}`);
      
     }
     await msgFind.destroy()

@@ -26,6 +26,11 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false
+  },
+  
+  role: {
+    type: DataTypes.STRING,  
+    allowNull:true
   }
 
 }, {
@@ -39,8 +44,8 @@ const Message = sequelize.define('Message', {
     allowNull: false,
   },
 
-  parent:{
-  type: DataTypes.INTEGER
+  parent: {
+    type: DataTypes.INTEGER
   },
 
   message: {

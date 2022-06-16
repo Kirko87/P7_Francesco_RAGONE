@@ -30,7 +30,9 @@ exports.signup = async (req, res, next) => {
       // Name: userList.name,
       // Surname: userList.surname,
       token: jwt.sign(
-        { userId: userList.id },
+        { userId: userList.id, 
+          role: userList.role
+        },
         process.env.RANDOM_SECRET_KEY,
         { expiresIn: '24h' },
       ),
@@ -63,7 +65,9 @@ exports.login = async (req, res, next) => {
 
       userId: user.id,
       token: jwt.sign(
-        { userId: user.id },
+        { userId: user.id,
+          role: user.role
+        },
         process.env.RANDOM_SECRET_KEY,
         { expiresIn: '24h' },
 
@@ -92,7 +96,8 @@ try{
 
   res.status(200).json({
 
- Username: user.userName
+ Username: user.userName,
+ id:user.id
 
   })
 
