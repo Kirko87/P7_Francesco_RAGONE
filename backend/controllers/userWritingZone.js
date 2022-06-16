@@ -53,15 +53,6 @@ exports.createMsgInList = async (req, res, next) => {
       imageUrl: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'è l'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
       userId: req.auth.userId,
       
-       
-
-          // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-
-       
-    
-     
-    
-     
 
    });
    console.log(req.body);
@@ -144,7 +135,7 @@ exports.modifyMsg = async (req, res, next) => {
       if (msgModify.userId !== req.auth.userId) {
         return res.status(400).json({message: 'Cette message ne vous appartient pas'});
       }
-      const msgObject = req.file ?
+      const msgObject = req.file?
   
       {
         ...JSON.parse(req.body.message),
@@ -153,16 +144,43 @@ exports.modifyMsg = async (req, res, next) => {
   
      
   
-    Message.upsert({ where:{ message:req.body.message }}, { ...msgObject, message: req.body.message  })
+    Message.update({ where:{ message:req.body.message }}, { ...msgObject, message: req.body.message  })
+    
+
       .then(() => res.status(200).json({ message: 'Objet modifié !' }))
       .catch(error => res.status(400).json({ error }));
   
   }catch(error){console.error(error)
     res.status(500).json({ error })}
-    
-    
   };
 
+//   //FEEDBACK salse
+// exports.likesDislikes = async (req, res, next) => {
+//   try {
+//     const sauce = await Sauces.findOne({
+//       _id: req.params.id
+//     })
+
+//     sauce.usersLiked = sauce.usersLiked.filter(userId => userId !== req.body.userId)
+//     sauce.usersDisliked = sauce.usersDisliked.filter(userId => userId !== req.body.userId)
+
+//     const like = req.body.like
+//     switch (like) {
+//       case 1:
+//         sauce.usersLiked.push(req.body.userId)
+//         break;
+
+//       case -1:
+//         sauce.usersDisliked.push(req.body.userId)
+//         break;
+//     }
+//     await sauce.save()
+//     res.status(200).json({message:'Valutation ajoutée'})
+//   }
+//   catch (error) {
+//     res.status(400).json({message:'error'})
+//   }
+// }
 
 // // In molti editor una linea di codice può
 // // essere commentata con la combinazione da tastiera dei tasti Ctrl+/
