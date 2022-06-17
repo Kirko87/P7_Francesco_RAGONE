@@ -58,14 +58,14 @@ const Message = sequelize.define('Message', {
   },
 
   usersLiked: {
-   type: DataTypes.NUMBER,
-   default: 0,
+   type: DataTypes.STRING,
+   default: [],
    require:true
   },
 
   usersDisliked: {
-    type: DataTypes.NUMBER,
-    default: 0,
+    type: DataTypes.STRING,
+    default: [],
    require:true
   }
 

@@ -5,73 +5,59 @@ const { autocompleteCommand } = require('cli');
 const { send } = require('process');
 const { normalize } = require('path');
 
+//-----FUNZIONE PER NORMALIZZARE LA GESTIONE IMMAGINI
 
-
-function messageNormalizer(message,req) {
+function messageNormalizer(message, req) {
   return {
     ...message.toJSON(),
     imageUrl: message.imageUrl && `${req.protocol}://${req.get('host')}/images/${message.imageUrl}`
-    
+
   }
 }
-
-
 
 //-----TROVA TUTTI I MESSAGGI in home-page
 exports.messageList = async (req, res, next) => {
   try {
-    const messageInList = await Message.findAll({where:{parent:req.params.id || null}});
-    res.status(200).json(messageInList.map(msg=>messageNormalizer(msg,req)))
+    const messageInList = await Message.findAll({ where: { parent: req.params.id || null } });
+    res.status(200).json(messageInList.map(msg => messageNormalizer(msg, req)))
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
   }
 }
+
 //-----CONTA messaggi-children(commenti)
 exports.messageCount = async (req, res, next) => {
 
   try {
-    const messageInList = await Message.count({where:{parent:req.params.id || null}});
-    res.status(200).send(""+ messageInList)
+    const messageInList = await Message.count({ where: { parent: req.params.id || null } });
+    res.status(200).send("" + messageInList)
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
   }
-
-  
 }
-
-
 
 //-----CREA MESSAGGI in home-page
 exports.createMsgInList = async (req, res, next) => {
 
   try {
-    const msgInList = await Message.create({ 
-      message:req.body.message,
-      parent:req.body.parent || null, //il messaggio parent puo' avere il valore [NULL] o il numero id quando vi si scrive un messaggio/commento e si fa riferimento al primo messaggio (parent)
+    const msgInList = await Message.create({
+      message: req.body.message,
+      parent: req.body.parent || null, //il messaggio parent puo' avere il valore [NULL] o il numero id quando vi si scrive un messaggio/commento e si fa riferimento al primo messaggio (parent)
       imageUrl: req.file?.filename, // il "?" vale come un "if", bisogna metterlo per dire "se c'è l'immagine, allora cercala", altrimenti si ha un errore perché cerca un immagine che non c'é necessariamente
       userId: req.auth.userId,
-      
-
-   });
-   console.log(req.body);
+    });
+    console.log(req.body);
     console.log("Message's auto-generated ID:", msgInList.id);
-   
+
     res.status(201).json(messageNormalizer(msgInList, req));
-
-
 
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
   }
 }
-
-
-
-
-
 
 //-----TROVA un messaggio specifico
 exports.getOneMsg = async (req, res, next) => {
@@ -82,7 +68,7 @@ exports.getOneMsg = async (req, res, next) => {
     if (msgContent == null) {
       return res.status(204).json({ messageStatus: 'Message non trouvé!' })
     }
-   res.status(200).json( messageNormalizer(msgContent, req) )
+    res.status(200).json(messageNormalizer(msgContent, req))
 
   } catch (error) {
     res.status(500).json({ error })
@@ -99,51 +85,43 @@ exports.deleteMsg = async (req, res, next) => {
     }
 
     if (msgFind.imageUrl) {
-      
+
       fs.unlinkSync(`images/${msgFind.imageUrl}`);
-     
+
     }
     await msgFind.destroy()
     res.status(200).json({ messageStatus: 'Objet supprimé !' })
 
-
   } catch (error) {
     res.status(500).json({ error })
     console.error(error);
-    
+
   }
 };
 
 // //MODIFICA un messaggio
 
 exports.modifyMsg = async (req, res, next) => {
-  try{
-  
-    const msgModify = await Message.findOne({where:{ id: req.params.id }})
+  try {
 
-  
-      if (msgModify.userId !== req.auth.userId) {
-        return res.status(400).json({message: 'Cette message ne vous appartient pas'});
-      }
-      const msgObject = req.file?
-     
-      {
-        ...JSON.parse(req.body.message),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-      } : { ...req.body };
+    const msgModify = await Message.findOne({ where: { id: req.params.id } })
 
+    if (msgModify.userId !== req.auth.userId) {
+      return res.status(400).json({ message: 'Cette message ne vous appartient pas' });
+    }
 
-      if (req.body.message) msgModify.message = req.body.message
-      if (req.file) msgModify.imageUrl = req.file.filename
-      await msgModify.save()
-      res.status(200).json(messageNormalizer(msgModify, req))
-     
-      // .catch(error => res.status(400).json({ error }));
+    if (req.body.message) msgModify.message = req.body.message
+    if (req.file) msgModify.imageUrl = req.file.filename
+    await msgModify.save()
+    res.status(200).json(messageNormalizer(msgModify, req))
 
-  
-  }catch(error){console.error(error)
-    res.status(500).json({ error })}
-  };
+    // .catch(error => res.status(400).json({ error }));
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error })
+  }
+};
 
 //   //FEEDBACK messaggi
 exports.likesDislikes = async (req, res, next) => {
@@ -158,20 +136,25 @@ exports.likesDislikes = async (req, res, next) => {
     const like = req.body.like
     switch (like) {
       case 1:
-        sauce.usersLiked.push(req.auth.userId)
+        msgLikes.usersLiked.push(req.auth.userId)
         break;
 
       case -1:
-        sauce.usersDisliked.push(req.auth.userId)
+        msgLikes.usersDisliked.push(req.auth.userId)
         break;
     }
-    await msgLikes.save()
-    res.status(200).json({message:'Valutation ajoutée'})
+    // await msgLikes.save()
+    // msgLikes.JSON.stringify(msgLikes)
+
+    res.status(200).json({ message: 'Valutation ajoutée' })
   }
   catch (error) {
-    res.status(400).json({message:'error'})
+    res.status(400).json({ message: 'error' })
   }
 }
+
+
+
 
 // // In molti editor una linea di codice può
 // // essere commentata con la combinazione da tastiera dei tasti Ctrl+/

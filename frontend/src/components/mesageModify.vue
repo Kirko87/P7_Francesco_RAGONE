@@ -1,10 +1,10 @@
 <template>
-  <button v-if="!isModifying" @click.stop.pevent="isModifying = true">Modifier</button>
-  <form v-else @submit="createMessage" class="textArea" ref="my-component-modify">
+  <button v-if="!isModifying" @click.stop.pevent="isModifying = true" class="buttonModify">Modify</button>
+  <form v-else @submit="createMessage" class="textAreaM" ref="my-component-modify">
 
-    <textarea class="textArea_text" type="text" placeholder="write here:" v-model="newMessage"></textarea>
-    <input class="textArea_input" type="file" @change="onFileChange" ref="image">
-    <button class="textArea_button" type="submit" @click="createMessage">send</button>
+    <textarea class="textAreaM_text" type="text" placeholder="write here:" v-model="newMessage"></textarea>
+    <input class="textAreaM_input" type="file" @change="onFileChange" ref="image">
+    <button class="textAreaM_button" type="submit" @click="modifyMessage">send</button>
 
   </form>
 </template>
@@ -26,10 +26,11 @@ export default {
 
   created() {
     this.newMessage = this.message.message
+    
   },
 
   methods: {
-    async createMessage(event) {
+    async modifyMessage(event) {
       event.preventDefault();
       let formData = new FormData()
       formData.append("message", this.newMessage)
@@ -72,4 +73,45 @@ export default {
 </script>
 
 <style lang="scss">
+
+.buttonModify{
+width:100%;
+background-color:rgb(252, 252, 109)
+
+}
+
+.textAreaM {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &_text {
+        height: 1rem;
+        border: none;
+        width: 100%;
+        background-color: rgba(240, 248, 255, 0.399);
+    }
+
+    &_input {
+        height: 1.6rem;
+
+    }
+
+    &_button {
+        align-self: center;
+        width: auto;
+        height: 1.2rem;
+        border: 1px solid black;
+        border-style:inset;
+        color: rgb(0, 0, 0);
+        width: 20%;
+        background-color: rgb(252, 252, 109);
+        margin-bottom: 1rem;
+        flex: 1;
+
+    }
+}
+
+
+
 </style>
