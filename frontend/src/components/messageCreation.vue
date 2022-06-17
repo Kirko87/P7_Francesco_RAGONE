@@ -29,7 +29,7 @@ export default {
             formData.append("message", this.newMessage)
             formData.append("image", this.image)
             if (this.parent)
-                formData.append("parent", this.parent) //ligna che da problemi ( valore null invece di [NULL] IN DBeaver)
+                formData.append("parent", this.parent) 
             const response = await fetch("http://localhost:3010/Groupomania/message", {
                 method: "post",
                 headers: {
@@ -43,11 +43,6 @@ export default {
             console.log(this.newMessage);
             const message = await response.json();
 
-    //        if (imageUrl !== null){
-
-    //       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
-
-    //    }
 
             this.$emit("messageCreated", message);
             this.newMessage = "";//con "@click="createMessage"" sul button, pulisce la textarea 
@@ -76,7 +71,6 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
 
-    // border: 3px dotted greenyellow;
     &_text {
         height: 1rem;
         border: none;

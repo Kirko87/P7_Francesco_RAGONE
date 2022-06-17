@@ -57,6 +57,18 @@ const Message = sequelize.define('Message', {
     allowNull: true,
   },
 
+  usersLiked: {
+   type: DataTypes.NUMBER,
+   default: 0,
+   require:true
+  },
+
+  usersDisliked: {
+    type: DataTypes.NUMBER,
+    default: 0,
+   require:true
+  }
+
 
 }, {
   // Other model options go here

@@ -50,7 +50,8 @@ export default {
     created() {
         this.loadMessages();
         this.loadParent();
-        this.eventBus.on("deleteMsg", this.onMessageDelete)
+        this.eventBus.on("deleteMsg", this.onMessageDelete);
+        this.eventBus.on("messageModified", this.onMessageModified)
     },
 
     methods: {
@@ -89,8 +90,14 @@ export default {
             }
           this.messages = this.messages.filter(msg =>msg.id !== messageId)
           
+        },
+        onMessageModified(message){
+           if(this.parent === message.id){
+            this.parentMessage=message 
+           }else{
+            this.messages=this.messages.map( msg=> msg.id === message.id?message:msg)
+           }
         }
-
     },
 
     components: { MessageBox, MessageCreation, Logout },

@@ -98,17 +98,6 @@ exports.deleteMsg = async (req, res, next) => {
       return res.status(403).json({ messageStatus: 'Cette message ne vous appartient pas' })
     }
 
-
-
-    // var fs = require('fs');
-    // fs.readFile('readMe.txt', 'utf8', function (err, data) {
-    //  fs.writeFile('writeMe.txt', data, function(err, result) {
-    //     if(err) console.log('error', err);
-    //   });
-    // });
-
-
-
     if (msgFind.imageUrl) {
       
       fs.unlinkSync(`images/${msgFind.imageUrl}`);
@@ -131,56 +120,58 @@ exports.modifyMsg = async (req, res, next) => {
   try{
   
     const msgModify = await Message.findOne({where:{ id: req.params.id }})
-    
+
+  
       if (msgModify.userId !== req.auth.userId) {
         return res.status(400).json({message: 'Cette message ne vous appartient pas'});
       }
       const msgObject = req.file?
-  
+     
       {
         ...JSON.parse(req.body.message),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       } : { ...req.body };
-  
-     
-  
-    Message.update({ where:{ message:req.body.message }}, { ...msgObject, message: req.body.message  })
-    
 
-      .then(() => res.status(200).json({ message: 'Objet modifié !' }))
-      .catch(error => res.status(400).json({ error }));
+
+      if (req.body.message) msgModify.message = req.body.message
+      if (req.file) msgModify.imageUrl = req.file.filename
+      await msgModify.save()
+      res.status(200).json(messageNormalizer(msgModify, req))
+     
+      // .catch(error => res.status(400).json({ error }));
+
   
   }catch(error){console.error(error)
     res.status(500).json({ error })}
   };
 
-//   //FEEDBACK salse
-// exports.likesDislikes = async (req, res, next) => {
-//   try {
-//     const sauce = await Sauces.findOne({
-//       _id: req.params.id
-//     })
+//   //FEEDBACK messaggi
+exports.likesDislikes = async (req, res, next) => {
+  try {
+    const msgLikes = await Message.findOne({
+      _id: req.params.id
+    })
 
-//     sauce.usersLiked = sauce.usersLiked.filter(userId => userId !== req.body.userId)
-//     sauce.usersDisliked = sauce.usersDisliked.filter(userId => userId !== req.body.userId)
+    msgLikes.usersLiked = msgLikes.usersLiked.filter(userId => userId !== req.auth.userId)
+    msgLikes.usersDisliked = msgLikes.usersDisliked.filter(userId => userId !== req.auth.userId)
 
-//     const like = req.body.like
-//     switch (like) {
-//       case 1:
-//         sauce.usersLiked.push(req.body.userId)
-//         break;
+    const like = req.body.like
+    switch (like) {
+      case 1:
+        sauce.usersLiked.push(req.auth.userId)
+        break;
 
-//       case -1:
-//         sauce.usersDisliked.push(req.body.userId)
-//         break;
-//     }
-//     await sauce.save()
-//     res.status(200).json({message:'Valutation ajoutée'})
-//   }
-//   catch (error) {
-//     res.status(400).json({message:'error'})
-//   }
-// }
+      case -1:
+        sauce.usersDisliked.push(req.auth.userId)
+        break;
+    }
+    await msgLikes.save()
+    res.status(200).json({message:'Valutation ajoutée'})
+  }
+  catch (error) {
+    res.status(400).json({message:'error'})
+  }
+}
 
 // // In molti editor una linea di codice può
 // // essere commentata con la combinazione da tastiera dei tasti Ctrl+/

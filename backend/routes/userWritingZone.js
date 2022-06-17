@@ -13,7 +13,7 @@ router.delete('/message/:id', auth, userController.deleteMsg);
 router.get('/message/:id/childrenCount',auth, userController.messageCount);
 router.get('/message/:id/children', auth, userController.messageList);
 router.put ('/message/:id', auth, multer, userController.modifyMsg);
-// router.post('/message/:id/like', auth, userController.likesDislikes);
+router.post('/message/:id/like', auth, userController.likesDislikes);
 
 
 
