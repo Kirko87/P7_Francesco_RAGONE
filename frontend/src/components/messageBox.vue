@@ -59,6 +59,7 @@ export default {
     created() {
 
         this.loadMessages();
+        
     },
 
     methods: {
@@ -80,12 +81,11 @@ export default {
                 method: "POST",
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"),
-                }
-                // console.log(response);
-            //   this.msgLikes= await JSON.parse()
-
-               
-            })
+                } 
+            });
+            console.log(response);
+              let babbeo= await response.JSON.parse()
+               babbeo = this.msgLikes
         },
 
         async onDislike() {
@@ -94,7 +94,7 @@ export default {
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"),
                 }
-            })
+            });
         }
     },
 
@@ -102,7 +102,7 @@ export default {
         canBeModify() {
             const tokenUser = localStorage.getItem("token")
             const tokenVerify = parseJwt(tokenUser)
-            console.log(tokenVerify, this.user);
+            console.log(tokenVerify);
 
 
             return (this.objectMessage.userId === tokenVerify.userId || tokenVerify.role === 'Admin')

@@ -123,12 +123,10 @@ exports.modifyMsg = async (req, res, next) => {
   }
 };
 
-//   //FEEDBACK messaggi
+//  //FEEDBACK messaggi
 exports.likesDislikes = async (req, res, next) => {
   try {
-    const msgLikes = await Message.findOne({
-      _id: req.params.id
-    })
+    const msgLikes = await Message.findOne({where:{id: req.params.id}})
 
     msgLikes.usersLiked = msgLikes.usersLiked.filter(userId => userId !== req.auth.userId)
     msgLikes.usersDisliked = msgLikes.usersDisliked.filter(userId => userId !== req.auth.userId)
@@ -143,8 +141,8 @@ exports.likesDislikes = async (req, res, next) => {
         msgLikes.usersDisliked.push(req.auth.userId)
         break;
     }
-    // await msgLikes.save()
-    // msgLikes.JSON.stringify(msgLikes)
+    await msgLikes.save()
+    msgLikes.JSON.stringify()
 
     res.status(200).json({ message: 'Valutation ajoutée' })
   }
