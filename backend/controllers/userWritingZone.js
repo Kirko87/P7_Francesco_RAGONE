@@ -10,8 +10,9 @@ const { normalize } = require('path');
 function messageNormalizer(message, req) {
   return {
     ...message.toJSON(),
-    imageUrl: message.imageUrl && `${req.protocol}://${req.get('host')}/images/${message.imageUrl}`
-
+    imageUrl: message.imageUrl && `${req.protocol}://${req.get('host')}/images/${message.imageUrl}`,
+    usersLiked:JSON.parse(message.usersLiked),
+    usersDisliked:JSON.parse(message.usersDisliked)
   }
 }
 
@@ -106,7 +107,7 @@ exports.modifyMsg = async (req, res, next) => {
 
     const msgModify = await Message.findOne({ where: { id: req.params.id } })
 
-    if (msgModify.userId !== req.auth.userId) {
+    if (msgModify.userId !== req.auth.userId && req.auth.role !== "Admin") {
       return res.status(400).json({ message: 'Cette message ne vous appartient pas' });
     }
 
@@ -126,28 +127,42 @@ exports.modifyMsg = async (req, res, next) => {
 //  //FEEDBACK messaggi
 exports.likesDislikes = async (req, res, next) => {
   try {
-    const msgLikes = await Message.findOne({where:{id: req.params.id}})
+    const msgLikes = await Message.findOne({ where: { id: req.params.id } })
+    let usersLikes = JSON.parse(msgLikes.usersLiked) || []
+    let usersDislikes = JSON.parse(msgLikes.usersDisliked) || []
+    console.log(msgLikes.usersLiked);
+    usersLikes = usersLikes.filter(userId => userId !== req.auth.userId)
+    usersDislikes = usersDislikes.filter(userId => userId !== req.auth.userId)
 
-    msgLikes.usersLiked = msgLikes.usersLiked.filter(userId => userId !== req.auth.userId)
-    msgLikes.usersDisliked = msgLikes.usersDisliked.filter(userId => userId !== req.auth.userId)
+    // if(msgLikes.usersLiked.includes(req.auth.userId)) { alors ... } else { ... }
 
     const like = req.body.like
+    console.log(req.body);
     switch (like) {
       case 1:
-        msgLikes.usersLiked.push(req.auth.userId)
+        usersLikes.push(req.auth.userId)
+
+
         break;
 
       case -1:
-        msgLikes.usersDisliked.push(req.auth.userId)
+        usersDislikes.push(req.auth.userId)
+
+
+
         break;
     }
+    msgLikes.usersLiked = JSON.stringify(usersLikes)
+    msgLikes.usersDisliked = JSON.stringify(usersDislikes)
     await msgLikes.save()
-    msgLikes.JSON.stringify()
 
-    res.status(200).json({ message: 'Valutation ajoutée' })
+
+
+    res.status(200).json(messageNormalizer( msgLikes, req ))
   }
   catch (error) {
     res.status(400).json({ message: 'error' })
+    console.log(error);
   }
 }
 

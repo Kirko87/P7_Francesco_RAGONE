@@ -57,15 +57,21 @@ const Message = sequelize.define('Message', {
     allowNull: true,
   },
 
+  like:{
+    type:DataTypes.NUMBER,
+    defaultValue:0,
+    require:true
+  },
+
   usersLiked: {
    type: DataTypes.STRING,
-   default: [],
+   defaultValue:"[]",
    require:true
   },
 
   usersDisliked: {
     type: DataTypes.STRING,
-    default: [],
+    defaultValue:"[]",
    require:true
   }
 
